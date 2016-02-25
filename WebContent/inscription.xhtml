@@ -11,46 +11,37 @@
 	<h:form id="formulaire">
 		<fieldset>
 			<legend>Inscription</legend>
-			<h:outputLabel for="email">Adresse email <span
-					class="requis">*</span>
+			
+			<h:outputLabel for="email"> Adresse email <span class="requis">*</span>
 			</h:outputLabel>
-			<h:inputText id="email" value="#{inscrireBean.utilisateur.email}"
-				size="20" maxlength="60">
+			<h:inputText id="email" value="#{inscrireBean.utilisateur.email}" size="20" maxlength="60">
 				<f:ajax event="blur" render="emailMessage" />
 				<f:validator binding="#{existenceEmailValidator}" />
 			</h:inputText>
 			<h:message id="emailMessage" for="email" errorClass="erreur" />
 			<br />
 
-			<h:outputLabel for="motdepasse">Mot de passe <span
-					class="requis">*</span>
+			<h:outputLabel for="motdepasse"> Mot de passe <span class="requis">*</span>
 			</h:outputLabel>
-			<h:inputSecret id="motdepasse"
-				value="#{inscrireBean.utilisateur.mdp}" binding="#{composantMotDePasse}" size="20" maxlength="20">
+			<h:inputSecret id="motdepasse" value="#{inscrireBean.utilisateur.mdp}" binding="#{composantMotDePasse}" size="20" maxlength="20">
 				<f:ajax event="blur" execute="motdepasse confirmation" render="motDePasseMessage confirmationMessage" />
 			</h:inputSecret>
-			<h:message id="motDePasseMessage" for="motdepasse"
-				errorClass="erreur" />
+			<h:message id="motDePasseMessage" for="motdepasse" errorClass="erreur" />
 			<br />
 
-			<h:outputLabel for="confirmation">Confirmation du mot de passe <span
-					class="requis">*</span>
+			<h:outputLabel for="confirmation"> Confirmation du mot de passe <span class="requis">*</span>
 			</h:outputLabel>
-			<h:inputSecret id="confirmation"
-				value="#{inscrireBean.utilisateur.mdp}" size="20" maxlength="20">
+			<h:inputSecret id="confirmation" value="#{inscrireBean.utilisateur.mdp}" size="20" maxlength="20">
 				<f:validator validatorId="confirmationMDPValidator" />
 				<f:attribute name="composantMotDePasse" value="#{composantMotDePasse}" />
 				<f:ajax event="blur" execute="motdepasse confirmation" render="motDePasseMessage confirmationMessage" />
 			</h:inputSecret>
-			<h:message id="confirmationMessage" for="confirmation"
-				errorClass="erreur" />
+			<h:message id="confirmationMessage" for="confirmation" errorClass="erreur" />
 			<br />
 
-			<h:outputLabel for="nom">Nom d'utilisateur <span
-					class="requis">*</span>
+			<h:outputLabel for="nom"> Login utilisateur <span class="requis">*</span>
 			</h:outputLabel>
-			<h:inputText id="nom" value="#{inscrireBean.utilisateur.login}"
-				size="20" maxlength="20">
+			<h:inputText id="nom" value="#{inscrireBean.utilisateur.login}" size="20" maxlength="20">
 				<f:ajax event="blur" render="nomMessage" />
 			</h:inputText>
 			<h:message id="nomMessage" for="nom" errorClass="erreur" />
@@ -58,8 +49,7 @@
 
 			<h:messages globalOnly="true" infoClass="info" />
 
-			<h:commandButton value="Inscription"
-				action="#{inscrireBean.inscrire}" styleClass="sansLabel">
+			<h:commandButton value="Inscription" action="#{inscrireBean.inscrire}" styleClass="sansLabel">
 				<f:ajax execute="@form" render="@form" />
 			</h:commandButton>
 			<br />

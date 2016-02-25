@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+<h:head>
+	<meta charset="utf-8" />
+	<title>Connexion</title>
+	<h:outputStylesheet library="default" name="css/form.css" />
+</h:head>
+<h:body>
+	<h:form id="formulaire">
+		<fieldset>
+			<legend>Connexion</legend>
+			
+			<h:outputLabel for="email"> Adresse email </h:outputLabel>
+			<h:inputText id="email" value="#{connexionBean.utilisateur.email}" size="20" maxlength="60"/>
+			<br />
+
+			<h:outputLabel for="motdepasse"> Mot de passe </h:outputLabel>
+			<h:inputSecret id="motdepasse" value="#{connexionBean.utilisateur.mdp}" size="20" maxlength="20"/>
+			<br />
+
+			<h:messages globalOnly="true" infoClass="info" />
+
+			<h:commandButton value="Connexion" action="#{connexionBean.connecter}" styleClass="sansLabel">
+				<f:ajax execute="@form" render="@form" />
+			</h:commandButton>
+			<br />
+		</fieldset>
+	</h:form>
+</h:body>
+</html>
