@@ -25,6 +25,7 @@ public class Utilisateur implements Serializable {
 	@Pattern( regexp = "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)", message = "Merci de saisir une adresse mail valide" )
 	private String email;
 
+	@NotNull( message = "Veuillez choisir un rôle" )
 	private int idRole;
 
 	@NotNull( message = "Veuillez saisir un login" )

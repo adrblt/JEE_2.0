@@ -22,11 +22,27 @@
 		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
 	<filter>
-		<filter-name>RestrictionFilter</filter-name>
-		<filter-class>filters.ConnexionFilter</filter-class>
+		<filter-name>AdminFilter</filter-name>
+		<filter-class>filters.AdminFilter</filter-class>
 	</filter>
 	<filter-mapping>
-		<filter-name>RestrictionFilter</filter-name>
+		<filter-name>AdminFilter</filter-name>
 		<url-pattern>/adminFolder/*</url-pattern>
+	</filter-mapping>
+	<filter>
+		<filter-name>MSFilter</filter-name>
+		<filter-class>filters.MSFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>MSFilter</filter-name>
+		<url-pattern>/msFolder/*</url-pattern>
+	</filter-mapping>
+	<filter>
+		<filter-name>InvestFilter</filter-name>
+		<filter-class>filters.InvestFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>InvestFilter</filter-name>
+		<url-pattern>/investFolder/*</url-pattern>
 	</filter-mapping>
 </web-app>

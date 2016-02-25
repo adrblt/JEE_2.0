@@ -13,11 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import beans.ConnexionBean;
 
-public class ConnexionFilter implements Filter {
+public class InvestFilter implements Filter {
 
 	@Override
-	public void destroy() {
-	}
+	public void destroy() {}
 
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
@@ -32,15 +31,16 @@ public class ConnexionFilter implements Filter {
 		}
 		ConnexionBean connexionBean = (ConnexionBean) request.getSession().getAttribute("connexionBean");
 		if (connexionBean != null){
-			if(connexionBean.isLoggedIn())
+			if(connexionBean.isLoggedIn()) // IDINVEST
 				chain.doFilter(request, response);
+			else
+				response.sendRedirect( request.getContextPath() + "/connexion.xhtml" );
 		}
 		else
-			response.sendRedirect( request.getContextPath() + "/connexion.xhtml" );
+			response.sendRedirect( request.getContextPath() + "/connexion.xhtml" );		
 	}
 
 	@Override
-	public void init(FilterConfig config) throws ServletException {
-	}
+	public void init(FilterConfig config) throws ServletException {}
 
 }
