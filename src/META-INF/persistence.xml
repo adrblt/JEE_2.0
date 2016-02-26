@@ -4,6 +4,17 @@
 		<non-jta-data-source>java:jboss/datasources/bdd_jee</non-jta-data-source>
 		<class>entities.Utilisateur</class>
 		<class>entities.Societe</class>
+		<class>entities.Admin</class>
+		<class>entities.Contrat</class>
+		<class>entities.Investisseur</class>
+		<class>entities.MembreSociete</class>
+		<class>entities.Posseder</class>
+		<class>entities.PossederPK</class>
+		<class>entities.Role</class>
+		<class>entities.Secteur</class>
+		<class>entities.Type</class>
+		<class>entities.Vendre</class>
+		<class>entities.VendrePK</class>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://127.0.0.1:3306/bdd_jee"/>
