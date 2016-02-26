@@ -61,12 +61,22 @@
 			<h:message id="nomMessage" for="nom" errorClass="erreur" />
 			<br />
 
-			<h:selectOneRadio id="idRole" value="#{inscrireBean.utilisateur.idRole}" converter="javax.faces.Integer">
+			<h:selectOneRadio id="idRole"
+				value="#{inscrireBean.utilisateur.idRole}"
+				converter="javax.faces.Integer">
 				<f:selectItem itemValue="3" itemLabel="Membre Société" />
-				<f:selectItem itemValue="1" itemLabel="Administrateur" />
 				<f:selectItem itemValue="2" itemLabel="Investisseur" />
+				<f:ajax render="panelGroup" />
 			</h:selectOneRadio>
 			<h:message id="idRoleMessage" for="idRole" errorClass="erreur" />
+			<br />
+
+			<h:panelGroup id="panelGroup">
+				<h:selectOneMenu rendered="#{inscrireBean.utilisateur.idRole == 3}">
+					<f:selectItems value="#{societeBean.societes}" var="societe"
+						itemValue="#{societe.idSociete}" itemLabel="#{societe.nom}" />
+				</h:selectOneMenu>
+			</h:panelGroup>
 			<br />
 
 			<h:messages globalOnly="true" infoClass="info" />

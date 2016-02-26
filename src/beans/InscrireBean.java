@@ -10,6 +10,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import dao.UtilisateurDao;
+import entities.Societe;
 import entities.Utilisateur;
 
 @ManagedBean

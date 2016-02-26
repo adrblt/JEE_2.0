@@ -87,5 +87,12 @@ public class Utilisateur implements Serializable {
 	public void setMdp(String mdp) {
 		this.mdp = mdp;
 	}
+	
+	public boolean isMS(){
+		if(this.idRole==3)
+			return true;
+		else
+			return false;
+	}
 
 }
