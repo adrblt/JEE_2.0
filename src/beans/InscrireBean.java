@@ -42,7 +42,7 @@ public class InscrireBean implements Serializable {
     public void inscrire() {
         initialiserDateInscription();
         utilisateurDao.creer( utilisateur );
-        if(utilisateur.getIdRole()==3){
+        if(utilisateur.getIdRole()==3){ // MEMBRE SOCIETE
         	if(idSociete>0){
         		MembreSociete ms = new MembreSociete();
         		ms.setIdUtilisateur(utilisateur.getIdUtilisateur());

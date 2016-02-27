@@ -28,9 +28,13 @@ public class Utilisateur implements Serializable {
 	@NotNull( message = "Veuillez choisir un rôle" )
 	private int idRole;
 
-	@NotNull( message = "Veuillez saisir un login" )
-	@Size( min = 3, message = "Le login doit contenir au moins 3 caractères" )
-	private String login;
+	@NotNull( message = "Veuillez saisir un nom" )
+	@Size( min = 3, message = "Le nom doit contenir au moins 3 caractères" )
+	private String nom;
+	
+	@NotNull( message = "Veuillez saisir un prenom" )
+	@Size( min = 3, message = "Le prenom doit contenir au moins 3 caractères" )
+	private String prenom;
 	
 	@NotNull( message = "Veuillez saisir un mot de passe" )
 	@Size( min = 3, message = "Le mot de passe doit contenir au moins 3 caractères" )
@@ -72,12 +76,20 @@ public class Utilisateur implements Serializable {
 		this.idRole = idRole;
 	}
 
-	public String getLogin() {
-		return this.login;
+	public String getNom() {
+		return this.nom;
 	}
 
-	public void setLogin(String login) {
-		this.login = login;
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+	
+	public String getPrenom() {
+		return this.prenom;
+	}
+
+	public void setPrenom(String prenom) {
+		this.prenom = prenom;
 	}
 
 	public String getMdp() {

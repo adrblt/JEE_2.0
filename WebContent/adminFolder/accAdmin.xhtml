@@ -9,5 +9,25 @@
 </h:head>
 <h:body>
 	ADMIN PAGE
+	<h:form id="formulaire">
+		<fieldset>
+			<legend>VALIDER PROFIL INVESTISSEUR</legend>
+
+			<h:selectManyCheckbox value="#{validateInvestBean.vinvestisseurs}"
+				converter="javax.faces.Integer">
+				<f:selectItems value="#{validateInvestBean.ninvestisseurs}"
+					var="ninvestisseur" itemValue="#{ninvestisseur.idUtilisateur}"
+					itemLabel="#{ninvestisseur.prenom}  #{ninvestisseur.nom} #{ninvestisseur.email}" />
+			</h:selectManyCheckbox>
+
+			<h:messages globalOnly="true" infoClass="info" />
+
+			<h:commandButton value="Valider" action="#{validateInvestBean.validate}"
+				styleClass="sansLabel">
+				<f:ajax execute="@form" render="@form" />
+			</h:commandButton>
+			<br />
+		</fieldset>
+	</h:form>
 </h:body>
 </html>

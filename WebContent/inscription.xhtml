@@ -51,14 +51,24 @@
 				errorClass="erreur" />
 			<br />
 
-			<h:outputLabel for="login"> Login utilisateur <span
+			<h:outputLabel for="nom"> Nom <span
 					class="requis">*</span>
 			</h:outputLabel>
-			<h:inputText id="login" value="#{inscrireBean.utilisateur.login}"
+			<h:inputText id="nom" value="#{inscrireBean.utilisateur.nom}"
 				size="20" maxlength="20">
-				<f:ajax event="blur" render="loginMessage" />
+				<f:ajax event="blur" render="nomMessage" />
 			</h:inputText>
-			<h:message id="loginMessage" for="login" errorClass="erreur" />
+			<h:message id="nomMessage" for="nom" errorClass="erreur" />
+			<br />
+
+			<h:outputLabel for="prenom"> Prenom <span
+					class="requis">*</span>
+			</h:outputLabel>
+			<h:inputText id="prenom" value="#{inscrireBean.utilisateur.prenom}"
+				size="20" maxlength="20">
+				<f:ajax event="blur" render="preMessage" />
+			</h:inputText>
+			<h:message id="preMessage" for="prenom" errorClass="erreur" />
 			<br />
 
 			<h:selectOneRadio id="idRole"
