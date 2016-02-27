@@ -3,6 +3,7 @@ package entities;
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 
 @Entity
@@ -14,12 +15,14 @@ public class Societe implements Serializable {
 	private int idSociete;
 	
 	@NotNull( message = "Veuillez saisir une description" )
+	@Size( max = 200, message = "La description ne doit pas dépasser 200 caractères" )
 	private String description;
 
 	@NotNull( message = "Veuillez choisir un secteur" )
 	private int idSecteur;
 
 	@NotNull( message = "Veuillez saisir un nom" )
+	@Size( min = 3, message = "Le nom doit contenir au moins 3 caractères" )
 	private String nom;
 
 	public Societe() {

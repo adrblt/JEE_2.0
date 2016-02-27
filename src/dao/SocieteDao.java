@@ -29,5 +29,19 @@ public class SocieteDao {
         }
         return societes;
     }
+    
+    public void creer( Societe societe ) throws DAOException {
+        try {
+        	EntityManagerFactory emf = Persistence.createEntityManagerFactory("Test");
+        	EntityManager em = emf.createEntityManager();
+            em.getTransaction().begin();
+            em.persist( societe );
+            em.flush();
+            em.close();
+            emf.close();
+        } catch ( Exception e ) {
+            throw new DAOException( e );
+        }
+    }
 
 }
