@@ -12,6 +12,8 @@ public class Investisseur implements Serializable {
 	private int idInvestisseur;
 
 	private int idUtilisateur;
+	
+	private float vCompte;
 
 	public Investisseur() {
 	}
@@ -32,4 +34,11 @@ public class Investisseur implements Serializable {
 		this.idUtilisateur = idUtilisateur;
 	}
 
+	public float getvCompte() {
+		return vCompte;
+	}
+
+	public void setvCompte(float vCompte) {
+		this.vCompte = vCompte;
+	}
 }

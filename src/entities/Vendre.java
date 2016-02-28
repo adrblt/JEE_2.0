@@ -17,7 +17,9 @@ public class Vendre implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dateFin;
 
-	private byte isEnchere;
+	private byte estEnchere;
+	
+	private byte estVendu;
 
 	private float prixVente;
 
@@ -48,12 +50,20 @@ public class Vendre implements Serializable {
 		this.dateFin = dateFin;
 	}
 
-	public byte getIsEnchere() {
-		return this.isEnchere;
+	public byte getEstEnchere() {
+		return this.estEnchere;
 	}
 
-	public void setIsEnchere(byte isEnchere) {
-		this.isEnchere = isEnchere;
+	public void setEstEnchere(byte estEnchere) {
+		this.estEnchere = estEnchere;
+	}
+	
+	public byte getEstVendu() {
+		return this.estVendu;
+	}
+
+	public void setEstVendu(byte estVendu) {
+		this.estVendu = estVendu;
 	}
 
 	public float getPrixVente() {

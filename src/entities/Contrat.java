@@ -11,6 +11,8 @@ public class Contrat implements Serializable {
 	private int idContrat;
 
 	private int idSociete;
+	
+	private int idType;
 
 	private String libelle;
 
@@ -31,6 +33,14 @@ public class Contrat implements Serializable {
 
 	public void setIdSociete(int idSociete) {
 		this.idSociete = idSociete;
+	}
+	
+	public int getIdType() {
+		return this.idType;
+	}
+
+	public void setIdType(int idType) {
+		this.idType = idType;
 	}
 
 	public String getLibelle() {

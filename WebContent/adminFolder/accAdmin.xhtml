@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
 	<meta charset="utf-8" />
 	<title>Accueil Admin</title>
 	<h:outputStylesheet library="default" name="css/form.css" />
 </h:head>
 <h:body>
+
+	<!-- PARTIE VALIDATION INVESTISSEUR -->
 	<h:form id="formInvestisseur">
 		<fieldset>
 			<legend>VALIDER PROFIL INVESTISSEUR</legend>
@@ -29,6 +32,10 @@
 		</fieldset>
 	</h:form>
 
+
+
+
+	<!-- PARTIE ACCREDITATION -->
 	<h:form id="formMS">
 		<fieldset>
 			<legend>INSCRIPTION MEMBRE SOCIETE</legend>
@@ -132,7 +139,6 @@
 							converter="javax.faces.Integer">
 							<f:selectItems value="#{secteurBean.societes}" var="secteur"
 								itemValue="#{secteur.idSecteur}" itemLabel="#{secteur.VSecteur}" />
-							<f:ajax render="panelGroup2" />
 						</h:selectOneMenu>
 
 					</fieldset>
@@ -152,5 +158,56 @@
 			<br />
 		</fieldset>
 	</h:form>
+
+
+	<!-- PARTIE RECHERCHES -->
+	<h:form id="formRecherche">
+		<fieldset>
+			<legend>RECHERCHES</legend>
+
+			<h:selectOneRadio converter="javax.faces.Integer"
+				value="#{rechercheAdminBean.choix}">
+				<f:selectItem itemValue="1" itemLabel="Entreprise" />
+				<f:selectItem itemValue="2" itemLabel="Utilisateur" />
+				<f:selectItem itemValue="3" itemLabel="Contrat" />
+				<f:ajax render="panelRecherche" />
+			</h:selectOneRadio>
+
+			<h:panelGroup id="panelRecherche">
+				<h:form id="formRE" rendered="#{rechercheAdminBean.choix==1}">
+					<fieldset>
+						<h:selectOneMenu value="#{rechercheAdminBean.secteur}"
+							valueChangeListener="#{rechercheAdminBean.rechercher()}" defaultLabel=" "
+							converter="javax.faces.Integer">
+							<f:selectItems value="#{secteurBean.societes}" var="secteur"
+								itemValue="#{secteur.VSecteur}" itemLabel="#{secteur.VSecteur}" />
+						</h:selectOneMenu>
+						<br />
+
+						<ui:repeat value="#{rechercheAdminBean.resultat}" var="value">
+    						#{value} <br />
+						</ui:repeat>
+					</fieldset>
+				</h:form>
+
+				<h:form id="formRU" rendered="#{rechercheAdminBean.choix==2}">
+					<fieldset>
+						<span>U</span>
+					</fieldset>
+				</h:form>
+
+				<h:form id="formRC" rendered="#{rechercheAdminBean.choix==3}">
+					<fieldset>
+						<span>C</span>
+					</fieldset>
+				</h:form>
+
+			</h:panelGroup>
+
+		</fieldset>
+	</h:form>
+
+
+
 </h:body>
 </html>
