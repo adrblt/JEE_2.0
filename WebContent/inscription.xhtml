@@ -51,8 +51,7 @@
 				errorClass="erreur" />
 			<br />
 
-			<h:outputLabel for="nom"> Nom <span
-					class="requis">*</span>
+			<h:outputLabel for="nom"> Nom <span class="requis">*</span>
 			</h:outputLabel>
 			<h:inputText id="nom" value="#{inscrireBean.utilisateur.nom}"
 				size="20" maxlength="20">
@@ -71,71 +70,13 @@
 			<h:message id="preMessage" for="prenom" errorClass="erreur" />
 			<br />
 
-			<h:selectOneRadio id="idRole"
-				value="#{inscrireBean.utilisateur.idRole}"
-				converter="javax.faces.Integer">
-				<f:selectItem itemValue="3" itemLabel="Membre Société" />
-				<f:selectItem itemValue="2" itemLabel="Investisseur" />
-				<f:ajax render="panelGroup1" />
-			</h:selectOneRadio>
-			<h:message id="idRoleMessage" for="idRole" errorClass="erreur" />
-			<br />
-
-			<h:panelGroup id="panelGroup1">
-				<h:selectOneMenu rendered="#{inscrireBean.utilisateur.idRole == 3}"
-					value="#{inscrireBean.idSociete}" converter="javax.faces.Integer">
-					<f:selectItems value="#{societeBean.societes}" var="societe"
-						itemValue="#{societe.idSociete}" itemLabel="#{societe.nom}" />
-					<f:selectItem itemValue="-1" itemLabel="Autre" />
-					<f:ajax render="panelGroup2" />
-				</h:selectOneMenu>
-			</h:panelGroup>
-			<br />
-
-			<h:panelGroup id="panelGroup2">
-				<h:form id="formulaire2" rendered="#{inscrireBean.idSociete==-1}">
-					<f:ajax event="click" />
-					<fieldset>
-						<legend>Création société</legend>
-
-						<h:outputLabel for="nomS"> Nom <span
-								class="requis">*</span>
-						</h:outputLabel>
-						<h:inputText id="nomS" value="#{inscrireBean.societe.nom}"
-							size="20" maxlength="60">
-							<f:ajax event="blur" render="nomSMessage" />
-						</h:inputText>
-						<h:message id="nomSMessage" for="nomS" errorClass="erreur" />
-						<br />
-
-						<h:outputLabel for="description"> Description <span
-								class="requis">*</span>
-						</h:outputLabel>
-						<h:inputTextarea id="description"
-							value="#{inscrireBean.societe.description}"
-							style="max-width: 300px;max-height: 100px;">
-							<f:ajax event="blur" render="descriptionMessage" />
-						</h:inputTextarea>
-						<h:message id="descriptionMessage" for="description"
-							errorClass="erreur" />
-						<br />
-
-						<h:selectOneMenu value="#{inscrireBean.societe.idSecteur}"
-							converter="javax.faces.Integer">
-							<f:selectItems value="#{secteurBean.societes}" var="secteur"
-								itemValue="#{secteur.idSecteur}" itemLabel="#{secteur.VSecteur}" />
-							<f:ajax render="panelGroup2" />
-						</h:selectOneMenu>
-
-					</fieldset>
-				</h:form>
-			</h:panelGroup>
-			<br />
-
 			<h:messages globalOnly="true" infoClass="info" />
 
 			<h:commandButton value="Inscription"
-				action="#{inscrireBean.inscrire}" styleClass="sansLabel">
+				action="#{inscrireBean.inscrire}" styleClass="sansLabel"
+				converter="javax.faces.Integer">
+				<f:setPropertyActionListener
+					target="#{inscrireBean.utilisateur.idRole}" value="2" />
 				<f:ajax execute="@form" render="@form" />
 			</h:commandButton>
 			<br />

@@ -8,6 +8,27 @@
 	<h:outputStylesheet library="default" name="css/form.css" />
 </h:head>
 <h:body>
-	MEMBRE SOCIETE PAGE
+	<h:form id="formulaire">
+		<fieldset>
+			<legend>AJOUTER INFO</legend>
+
+			<h:inputTextarea id="infoS" value="#{infoBean.info.VInfo}"
+				style="width: 300px;height: 100px;resize: none;">
+				<f:ajax event="blur" render="infoSMessage" />
+			</h:inputTextarea>
+			<h:message id="infoSMessage" for="infoS" errorClass="erreur" />
+			<br />
+
+			<h:messages globalOnly="true" infoClass="info" />
+
+			<h:commandButton value="Publier" action="#{infoBean.publier}"
+				styleClass="sansLabel">
+				<f:setPropertyActionListener target="#{infoBean.utilisateur}"
+					value="#{connexionBean.utilisateur}" />
+				<f:ajax execute="@form" render="@form" />
+			</h:commandButton>
+			<br />
+		</fieldset>
+	</h:form>
 </h:body>
 </html>

@@ -8,8 +8,7 @@
 	<h:outputStylesheet library="default" name="css/form.css" />
 </h:head>
 <h:body>
-	ADMIN PAGE
-	<h:form id="formulaire">
+	<h:form id="formInvestisseur">
 		<fieldset>
 			<legend>VALIDER PROFIL INVESTISSEUR</legend>
 
@@ -22,8 +21,132 @@
 
 			<h:messages globalOnly="true" infoClass="info" />
 
-			<h:commandButton value="Valider" action="#{validateInvestBean.validate}"
-				styleClass="sansLabel">
+			<h:commandButton value="Valider"
+				action="#{validateInvestBean.validate}" styleClass="sansLabel">
+				<f:ajax execute="@form" render="@form" />
+			</h:commandButton>
+			<br />
+		</fieldset>
+	</h:form>
+
+	<h:form id="formMS">
+		<fieldset>
+			<legend>INSCRIPTION MEMBRE SOCIETE</legend>
+
+			<h:outputLabel for="email"> Adresse email <span
+					class="requis">*</span>
+			</h:outputLabel>
+			<h:inputText id="email" value="#{inscrireBean.utilisateur.email}"
+				size="20" maxlength="60">
+				<f:ajax event="blur" render="emailMessage" />
+				<f:validator binding="#{existenceEmailValidator}" />
+			</h:inputText>
+			<h:message id="emailMessage" for="email" errorClass="erreur" />
+			<br />
+
+			<h:outputLabel for="motdepasse"> Mot de passe <span
+					class="requis">*</span>
+			</h:outputLabel>
+			<h:inputSecret id="motdepasse"
+				value="#{inscrireBean.utilisateur.mdp}"
+				binding="#{composantMotDePasse}" size="20" maxlength="20">
+				<f:ajax event="blur" execute="motdepasse confirmation"
+					render="motDePasseMessage confirmationMessage" />
+			</h:inputSecret>
+			<h:message id="motDePasseMessage" for="motdepasse"
+				errorClass="erreur" />
+			<br />
+
+			<h:outputLabel for="confirmation"> Confirmation du mot de passe <span
+					class="requis">*</span>
+			</h:outputLabel>
+			<h:inputSecret id="confirmation"
+				value="#{inscrireBean.utilisateur.mdp}" size="20" maxlength="20">
+				<f:validator validatorId="confirmationMDPValidator" />
+				<f:attribute name="composantMotDePasse"
+					value="#{composantMotDePasse}" />
+				<f:ajax event="blur" execute="motdepasse confirmation"
+					render="motDePasseMessage confirmationMessage" />
+			</h:inputSecret>
+			<h:message id="confirmationMessage" for="confirmation"
+				errorClass="erreur" />
+			<br />
+
+			<h:outputLabel for="nom"> Nom <span class="requis">*</span>
+			</h:outputLabel>
+			<h:inputText id="nom" value="#{inscrireBean.utilisateur.nom}"
+				size="20" maxlength="20">
+				<f:ajax event="blur" render="nomMessage" />
+			</h:inputText>
+			<h:message id="nomMessage" for="nom" errorClass="erreur" />
+			<br />
+
+			<h:outputLabel for="prenom"> Prenom <span
+					class="requis">*</span>
+			</h:outputLabel>
+			<h:inputText id="prenom" value="#{inscrireBean.utilisateur.prenom}"
+				size="20" maxlength="20">
+				<f:ajax event="blur" render="preMessage" />
+			</h:inputText>
+			<h:message id="preMessage" for="prenom" errorClass="erreur" />
+			<br />
+
+			<h:selectOneMenu value="#{inscrireBean.idSociete}"
+				converter="javax.faces.Integer">
+				<f:selectItems value="#{societeBean.societes}" var="societe"
+					itemValue="#{societe.idSociete}" itemLabel="#{societe.nom}" />
+				<f:selectItem itemValue="-1" itemLabel="Autre" />
+				<f:ajax render="panelGroup" />
+			</h:selectOneMenu>
+			<br />
+
+			<h:panelGroup id="panelGroup">
+				<h:form id="formulaire2" rendered="#{inscrireBean.idSociete==-1}">
+					<f:ajax event="click" />
+					<fieldset>
+						<legend>Création société</legend>
+
+						<h:outputLabel for="nomS"> Nom <span
+								class="requis">*</span>
+						</h:outputLabel>
+						<h:inputText id="nomS" value="#{inscrireBean.societe.nom}"
+							size="20" maxlength="60">
+							<f:ajax event="blur" render="nomSMessage" />
+						</h:inputText>
+						<h:message id="nomSMessage" for="nomS" errorClass="erreur" />
+						<br />
+
+						<h:outputLabel for="description"> Description <span
+								class="requis">*</span>
+						</h:outputLabel>
+						<h:inputTextarea id="description"
+							value="#{inscrireBean.societe.description}"
+							style="max-width: 300px;max-height: 100px;">
+							<f:ajax event="blur" render="descriptionMessage" />
+						</h:inputTextarea>
+						<h:message id="descriptionMessage" for="description"
+							errorClass="erreur" />
+						<br />
+
+						<h:selectOneMenu value="#{inscrireBean.societe.idSecteur}"
+							converter="javax.faces.Integer">
+							<f:selectItems value="#{secteurBean.societes}" var="secteur"
+								itemValue="#{secteur.idSecteur}" itemLabel="#{secteur.VSecteur}" />
+							<f:ajax render="panelGroup2" />
+						</h:selectOneMenu>
+
+					</fieldset>
+				</h:form>
+			</h:panelGroup>
+			<br />
+
+			<h:messages globalOnly="true" infoClass="info" />
+
+			<h:commandButton value="Inscription"
+				action="#{inscrireBean.inscrire}" styleClass="sansLabel"
+				converter="javax.faces.Integer">
+				<f:setPropertyActionListener
+					target="#{inscrireBean.utilisateur.idRole}" value="3" />
 				<f:ajax execute="@form" render="@form" />
 			</h:commandButton>
 			<br />

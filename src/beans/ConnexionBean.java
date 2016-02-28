@@ -40,8 +40,10 @@ public class ConnexionBean implements Serializable {
 				loggedIn = true;
 				if(utilisateur.getIdRole()==1)
 					FacesContext.getCurrentInstance().getExternalContext().redirect("/JEE_2.0/adminFolder/accAdmin.xhtml");
+				else if(utilisateur.getIdRole()==2)
+					FacesContext.getCurrentInstance().getExternalContext().redirect("/JEE_2.0/investFolder/accInvest.xhtml");
 				else
-					FacesContext.getCurrentInstance().getExternalContext().redirect("inscription.xhtml");
+					FacesContext.getCurrentInstance().getExternalContext().redirect("/JEE_2.0/msFolder/accMS.xhtml");
 			}
     	} 		
         FacesContext.getCurrentInstance().addMessage( null, message );
