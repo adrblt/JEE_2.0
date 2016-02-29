@@ -23,7 +23,7 @@ public class RechercheAdminBean {
 	private int choix;
 	
 	private String secteur = " ";
-	private int nbContratsMin;
+	private int nbContratsMin = 0;
 	
 	private Map<String, Map<String, String> > recherche;
 	
@@ -56,14 +56,22 @@ public class RechercheAdminBean {
 		for (Map.Entry<String, Map<String, String> > entry : recherche.entrySet()) {
 			String nom = entry.getKey();
 			if(entry.getValue().containsValue(secteur) || secteur.equals(" ")){
+				boolean add = true;
 				String res = nom;
 				Map<String, String> parametres = entry.getValue();
 				for (Map.Entry<String, String> entryParam : parametres.entrySet()) {
 					String nomParam = entryParam.getKey();
 					String valeurParam = entryParam.getValue();
-					res += " " + valeurParam;
+					if(nomParam.equals("nbContrats")){
+						if(Integer.parseInt(valeurParam) < nbContratsMin){
+							add = false;
+							break;
+						}
+					}										
+					res += " - " + valeurParam;
 				}
-				resultat.add(res);
+				if(add==true)
+					resultat.add(res);
 			}
 		}
 	}

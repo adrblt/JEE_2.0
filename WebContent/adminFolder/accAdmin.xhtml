@@ -175,22 +175,23 @@
 
 			<h:panelGroup id="panelRechercheE">
 				<h:form id="formRE" rendered="#{rechercheAdminBean.choix==1}">
-					<f:ajax event="click" />
 					<fieldset>
-						<h:selectOneMenu value="#{rechercheAdminBean.secteur}">
+						<h:selectOneMenu value="#{rechercheAdminBean.secteur}"
+							valueChangeListener="#{rechercheAdminBean.rechercher()}"
+							immediate="true">
 							<f:selectItem itemValue=" " itemLabel=" " />
 							<f:selectItems value="#{secteurBean.societes}" var="secteur"
 								itemValue="#{secteur.VSecteur}" itemLabel="#{secteur.VSecteur}" />
+							<f:ajax process="@this" render="@form res" />
+							<f:ajax event="click" />
 						</h:selectOneMenu>
-						<br />
 
-						<h:commandButton value="Actualiser"
-							action="#{rechercheAdminBean.rechercher()}"
-							styleClass="sansLabel">
-							<f:ajax execute="@form" render="@form alvs" />
-						</h:commandButton>
+						<h:inputText value="#{rechercheAdminBean.nbContratsMin}"
+							converter="javax.faces.Integer">
+							<f:ajax event="blur" render="res" listener="#{rechercheAdminBean.rechercher()}"/>
+						</h:inputText>
 
-						<h:panelGroup id="alvs">
+						<h:panelGroup id="res">
 							<ui:repeat rendered="#{rechercheAdminBean.choix==1}"
 								value="#{rechercheAdminBean.resultat}" var="value">
     						#{value} <br />
