@@ -18,7 +18,6 @@ public class Societe implements Serializable {
 	@Size( max = 200, message = "La description ne doit pas dépasser 200 caractères" )
 	private String description;
 
-	@NotNull( message = "Veuillez choisir un secteur" )
 	private int idSecteur;
 
 	@NotNull( message = "Veuillez saisir un nom" )

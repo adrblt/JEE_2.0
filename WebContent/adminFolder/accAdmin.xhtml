@@ -170,40 +170,48 @@
 				<f:selectItem itemValue="1" itemLabel="Entreprise" />
 				<f:selectItem itemValue="2" itemLabel="Utilisateur" />
 				<f:selectItem itemValue="3" itemLabel="Contrat" />
-				<f:ajax render="panelRecherche" />
+				<f:ajax render="panelRechercheE" />
 			</h:selectOneRadio>
 
-			<h:panelGroup id="panelRecherche">
+			<h:panelGroup id="panelRechercheE">
 				<h:form id="formRE" rendered="#{rechercheAdminBean.choix==1}">
+					<f:ajax event="click" />
 					<fieldset>
-						<h:selectOneMenu value="#{rechercheAdminBean.secteur}"
-							valueChangeListener="#{rechercheAdminBean.rechercher()}" defaultLabel=" "
-							converter="javax.faces.Integer">
+						<h:selectOneMenu value="#{rechercheAdminBean.secteur}">
+							<f:selectItem itemValue=" " itemLabel=" " />
 							<f:selectItems value="#{secteurBean.societes}" var="secteur"
 								itemValue="#{secteur.VSecteur}" itemLabel="#{secteur.VSecteur}" />
 						</h:selectOneMenu>
 						<br />
 
-						<ui:repeat value="#{rechercheAdminBean.resultat}" var="value">
+						<h:commandButton value="Actualiser"
+							action="#{rechercheAdminBean.rechercher()}"
+							styleClass="sansLabel">
+							<f:ajax execute="@form" render="@form alvs" />
+						</h:commandButton>
+
+						<h:panelGroup id="alvs">
+							<ui:repeat rendered="#{rechercheAdminBean.choix==1}"
+								value="#{rechercheAdminBean.resultat}" var="value">
     						#{value} <br />
-						</ui:repeat>
-					</fieldset>
-				</h:form>
-
-				<h:form id="formRU" rendered="#{rechercheAdminBean.choix==2}">
-					<fieldset>
-						<span>U</span>
-					</fieldset>
-				</h:form>
-
-				<h:form id="formRC" rendered="#{rechercheAdminBean.choix==3}">
-					<fieldset>
-						<span>C</span>
+							</ui:repeat>
+						</h:panelGroup>
 					</fieldset>
 				</h:form>
 
 			</h:panelGroup>
 
+			<h:form id="formRU" rendered="#{rechercheAdminBean.choix==2}">
+				<fieldset>
+					<span>U</span>
+				</fieldset>
+			</h:form>
+
+			<h:form id="formRC" rendered="#{rechercheAdminBean.choix==3}">
+				<fieldset>
+					<span>C</span>
+				</fieldset>
+			</h:form>
 		</fieldset>
 	</h:form>
 

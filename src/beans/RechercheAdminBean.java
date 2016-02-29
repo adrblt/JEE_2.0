@@ -1,5 +1,6 @@
 package beans;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -10,6 +11,9 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 
 import dao.SocieteDao;
 
@@ -45,8 +49,9 @@ public class RechercheAdminBean {
 		}
     }
 	
-	public void rechercher(){
+	public void rechercher() throws IOException{
 		resultat = new ArrayList<String>();
+		resultat.add(" ");
 		recherche = societeDao.rechercheAdmin();
 		for (Map.Entry<String, Map<String, String> > entry : recherche.entrySet()) {
 			String nom = entry.getKey();
