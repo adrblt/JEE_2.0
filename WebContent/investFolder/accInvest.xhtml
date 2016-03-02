@@ -1,13 +1,82 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jstl/core">
 <h:head>
 	<meta charset="utf-8" />
 	<title>Accueil Investisseur</title>
 	<h:outputStylesheet library="default" name="css/form.css" />
 </h:head>
 <h:body>
-	INVESTISSEUR PAGE
+	<f:metadata>
+		<c:set value="#{connexionBean.utilisateur.email}" target="#{achatVenteBean}" property="email" />
+		<f:viewAction action="#{achatVenteBean.rechercheContratL()}" />
+	</f:metadata>
+	<h:form id="formLog">
+		<fieldset>
+			<legend>LOGS</legend>
+			<f:ajax event="click" />
+
+			<h:selectOneMenu value="#{achatVenteBean.secteur}">
+				<f:selectItem itemValue=" " itemLabel=" " />
+				<f:selectItems value="#{secteurBean.societes}" var="secteur"
+					itemValue="#{secteur.VSecteur}" itemLabel="#{secteur.VSecteur}" />
+				<f:ajax listener="#{achatVenteBean.rechercheContratL()}"
+					render="logs" />
+				<f:ajax event="click" />
+			</h:selectOneMenu>
+
+			<h:selectOneMenu value="#{achatVenteBean.firm}">
+				<f:selectItem itemValue=" " itemLabel=" " />
+				<f:selectItems value="#{societeBean.societes}" var="societe"
+					itemValue="#{societe.nom}" itemLabel="#{societe.nom}" />
+				<f:ajax listener="#{achatVenteBean.rechercheContratL()}"
+					render="logs" />
+				<f:ajax event="click" />
+			</h:selectOneMenu>
+
+			<h:panelGroup id="logs">
+				<br />
+				<h:dataTable value="#{achatVenteBean.resultatL}" var="row">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Societe" />
+						</f:facet>
+						<h:outputText value="#{row[6]}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Secteur" />
+						</f:facet>
+						<h:outputText value="#{row[0]}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Date" />
+						</f:facet>
+						<h:outputText value="#{row[1]}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Prix" />
+						</f:facet>
+						<h:outputText value="#{row[2]}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Achat(1) Vente(0)" />
+						</f:facet>
+						<h:outputText value="#{row[3]}" />
+					</h:column>
+
+				</h:dataTable>
+			</h:panelGroup>
+		</fieldset>
+	</h:form>
 </h:body>
 </html>

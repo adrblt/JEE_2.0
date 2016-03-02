@@ -119,6 +119,7 @@
 						<h:inputText id="nomS" value="#{inscrireBean.societe.nom}"
 							size="20" maxlength="60">
 							<f:ajax event="blur" render="nomSMessage" />
+							<f:validator binding="#{existenceNomValidator}" />
 						</h:inputText>
 						<h:message id="nomSMessage" for="nomS" errorClass="erreur" />
 						<br />

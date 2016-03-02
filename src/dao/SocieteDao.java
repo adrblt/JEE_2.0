@@ -21,7 +21,8 @@ public class SocieteDao {
 	private static final String JPQL_SELECT_ALL = "SELECT s FROM Societe s";
 	private static final String JPQL_SELECT_PAR_IDUTILISATEUR = "SELECT s FROM Societe s, MembreSociete ms WHERE ms.idUtilisateur=:idUtilisateur and ms.idSociete=s.idSociete";
 	private static final String JPQL_SELECT_GROUPBY_NBCONTRATS = "SELECT so.nom, se.vSecteur, COUNT(c.idContrat), so.description  FROM Societe so, Contrat c, Secteur se WHERE so.idSociete=c.idSociete and so.idSecteur=se.idSecteur GROUP BY so.nom";
-
+	private static final String JPQL_SELECT_PAR_NOM = "SELECT s FROM Societe s WHERE s.nom=:nom";
+	
 	public List<Societe> findAll() throws DAOException {
 		List<Societe> societes;
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Test");
@@ -83,5 +84,21 @@ public class SocieteDao {
 			throw new DAOException(e);
 		}
 	}
+	
+    public Societe trouver( String nom ) throws DAOException {
+    	Societe societe = null;
+    	EntityManagerFactory emf = Persistence.createEntityManagerFactory("Test");
+    	EntityManager em = emf.createEntityManager();
+        Query requete = em.createQuery( JPQL_SELECT_PAR_NOM );
+        requete.setParameter( "nom", nom );
+        try {
+            societe = (Societe) requete.getSingleResult();
+        } catch ( NoResultException e ) {
+            return null;
+        } catch ( Exception e ) {
+            throw new DAOException( e );
+        }
+        return societe;
+    }
 
 }
