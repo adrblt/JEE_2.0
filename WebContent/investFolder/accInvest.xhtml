@@ -75,16 +75,19 @@
 						<f:facet name="header">
 							<h:outputText value="Mise en vente" />
 						</f:facet>
-						<h:commandButton value="Vendre"
-							action="#{achatVenteBean.vendre()}" styleClass="sansLabel"
-							converter="javax.faces.Integer">
-							<f:setPropertyActionListener
-								target="#{achatVenteBean.misEnVentes}" value="#{row[4]}" />
+						<h:commandButton value="Vendre" styleClass="sansLabel"
+							converter="javax.faces.Float">
+							<f:setPropertyActionListener target="#{achatVenteBean.idContrat}"
+								value="#{row[4]}" />
+							<f:setPropertyActionListener target="#{achatVenteBean.dateAchat}"
+								value="#{row[2]}" />
+							<f:setPropertyActionListener target="#{achatVenteBean.prixAchat}"
+								value="#{row[1]}" />
 						</h:commandButton>
 					</h:column>
 
 				</h:dataTable>
-				<h:panelGroup rendered="#{achatVenteBean.misEnVentes!=0}">
+				<h:panelGroup rendered="#{achatVenteBean.idContrat!=0}">
 
 					<h:outputLabel for="valider"> Prix de vente : <span
 							class="requis">*</span>
@@ -101,10 +104,8 @@
 					<h:commandButton value="Annuler" styleClass="sansLabel"
 						converter="javax.faces.Integer" immediate="true">
 						<f:setPropertyActionListener
-							target="#{achatVenteBean.misEnVentes}" value="0" />
+							target="#{achatVenteBean.idContrat}" value="0" />
 					</h:commandButton>
-					<span> #{achatVenteBean.misEnVentes} #{achatVenteBean.prix}
-					</span>
 
 				</h:panelGroup>
 			</h:panelGroup>

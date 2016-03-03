@@ -1,6 +1,10 @@
 package beans;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +15,12 @@ import javax.faces.bean.SessionScoped;
 
 import dao.ContratDao;
 import dao.InvestisseurDao;
+import dao.LogDao;
+import dao.PossessionDao;
+import dao.VenteDao;
+import entities.Log;
 import entities.Utilisateur;
+import entities.Vente;
 
 @ManagedBean
 @SessionScoped
@@ -27,7 +36,10 @@ public class AchatVenteBean {
 	private List<List<String>> resultatL;
 	private List<Map<String, String>> rechercheCL = new ArrayList<Map<String, String>>();
 	
-	private int misEnVentes=0;
+	private int idContrat=0;
+	private String dateAchat;
+	private float prixAchat;
+	
 	private float prix=0;
 	private List<List<String>> resultatP;
 	private List<Map<String, String>> recherchePossessions = new ArrayList<Map<String, String>>();
@@ -36,9 +48,16 @@ public class AchatVenteBean {
 	private ContratDao contratDao;
 	@EJB
 	private InvestisseurDao investisseurDao;
+	@EJB
+    private LogDao logDao;
+	@EJB
+    private PossessionDao possessionDao;
+	@EJB
+    private VenteDao venteDao;
 	
 	public void rechercheIdInvest() {
-		idInvestisseur = investisseurDao.getIdInvestisseur(utilisateur.getIdUtilisateur());
+		if(idInvestisseur==0)
+			idInvestisseur = investisseurDao.getIdInvestisseur(utilisateur.getIdUtilisateur());
 	}
 
 	public void recherchePossessions(){
@@ -75,16 +94,58 @@ public class AchatVenteBean {
 		}
 	}
 	
-	public void vendre(){
-		
+	public void vendre() throws ParseException{
+		Log log = new Log();
+		log.setIdContrat(idContrat);
+		log.setIdInvestisseur(idInvestisseur);
+		log.setVLog((byte)1);
+		log.setPrixLog(prixAchat);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	    Date parsedDate = dateFormat.parse(dateAchat);
+	    Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+	    log.setDateLog(timestamp);
+	    // CREATION LOG
+	    logDao.creer(log);
+	    // SUPPRESSION POSSESSION
+	    possessionDao.delete(idInvestisseur, idContrat);
+	    // CREATION VENTE
+	    Timestamp date = new Timestamp( System.currentTimeMillis() );
+	    Vente vente = new Vente();
+	    vente.setDateDepart(date);
+	    vente.setIdContrat(idContrat);
+	    vente.setIdInvestisseur(idInvestisseur);
+	    vente.setPrixDepart(prix);
+	    venteDao.creer(vente);
+	    recherchePossessions = new ArrayList<Map<String, String>>();
+	    rechercheCL = new ArrayList<Map<String, String>>();
+	    rechercheContratL();
+	    recherchePossessions();
+	    idContrat=0;
+	    prix=0;
 	}
 	
-	public int getMisEnVentes() {
-		return misEnVentes;
+	public int getIdContrat() {
+		return idContrat;
 	}
 
-	public void setMisEnVentes(int misEnVentes) {
-		this.misEnVentes = misEnVentes;
+	public void setIdContrat(int idContrat) {
+		this.idContrat = idContrat;
+	}
+
+	public String getDateAchat() {
+		return dateAchat;
+	}
+
+	public void setDateAchat(String dateAchat) {
+		this.dateAchat = dateAchat;
+	}
+
+	public float getPrixAchat() {
+		return prixAchat;
+	}
+
+	public void setPrixAchat(float prixAchat) {
+		this.prixAchat = prixAchat;
 	}
 
 	public float getPrix() {
@@ -142,6 +203,5 @@ public class AchatVenteBean {
 	public void setUtilisateur(Utilisateur utilisateur) {
 		this.utilisateur = utilisateur;
 	}
-	
 	
 }
