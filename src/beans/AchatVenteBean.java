@@ -4,33 +4,67 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import dao.ContratDao;
+import dao.InvestisseurDao;
+import entities.Utilisateur;
 
 @ManagedBean
 @SessionScoped
 public class AchatVenteBean {
 	
-	private String email;
-	private String secteur = " ";
-	private String firm = " ";
+	private Utilisateur utilisateur;
+	private int idInvestisseur = 0;
+	private String secteurL = " ";
+	private String firmL = " ";
+	private String secteurP = " ";
+	private String firmP = " ";
 	
 	private List<List<String>> resultatL;
 	private List<Map<String, String>> rechercheCL = new ArrayList<Map<String, String>>();
 	
+	private int misEnVentes=0;
+	private float prix=0;
+	private List<List<String>> resultatP;
+	private List<Map<String, String>> recherchePossessions = new ArrayList<Map<String, String>>();
+	
 	@EJB
 	private ContratDao contratDao;
+	@EJB
+	private InvestisseurDao investisseurDao;
+	
+	public void rechercheIdInvest() {
+		idInvestisseur = investisseurDao.getIdInvestisseur(utilisateur.getIdUtilisateur());
+	}
 
+	public void recherchePossessions(){
+		resultatP = new ArrayList<List<String>>();
+		if (recherchePossessions.isEmpty())
+			recherchePossessions = contratDao.rechercheInvestP(utilisateur.getIdUtilisateur());
+		for (Map<String, String> entry : recherchePossessions) {
+			if ((entry.containsValue(secteurP) || secteurP.equals(" "))
+					&& (entry.containsValue(firmP) || firmP.equals(" "))) {
+				List<String> res = new ArrayList<String>();
+				for (Map.Entry<String, String> entryParam : entry.entrySet()) {
+					String valeurParam = entryParam.getValue();
+					res.add(valeurParam);
+				}
+				resultatP.add(res);
+			}
+		}
+	}
+	
 	public void rechercheContratL() {
 		resultatL = new ArrayList<List<String>>();
 		if (rechercheCL.isEmpty())
-			rechercheCL = contratDao.rechercheInvestL(email);
+			rechercheCL = contratDao.rechercheInvestL(utilisateur.getEmail());
 		for (Map<String, String> entry : rechercheCL) {
-			if ((entry.containsValue(secteur) || secteur.equals(" "))
-					&& (entry.containsValue(firm) || firm.equals(" "))) {
+			if ((entry.containsValue(secteurL) || secteurL.equals(" "))
+					&& (entry.containsValue(firmL) || firmL.equals(" "))) {
 				List<String> res = new ArrayList<String>();
 				for (Map.Entry<String, String> entryParam : entry.entrySet()) {
 					String valeurParam = entryParam.getValue();
@@ -41,31 +75,73 @@ public class AchatVenteBean {
 		}
 	}
 	
-	public String getSecteur() {
-		return secteur;
+	public void vendre(){
+		
+	}
+	
+	public int getMisEnVentes() {
+		return misEnVentes;
 	}
 
-	public String getFirm() {
-		return firm;
+	public void setMisEnVentes(int misEnVentes) {
+		this.misEnVentes = misEnVentes;
 	}
 
-	public void setSecteur(String secteur) {
-		this.secteur = secteur;
+	public float getPrix() {
+		return prix;
 	}
 
-	public void setFirm(String firm) {
-		this.firm = firm;
+	public void setPrix(float prix) {
+		this.prix = prix;
+	}
+
+	public String getSecteurL() {
+		return secteurL;
+	}
+
+	public String getFirmL() {
+		return firmL;
+	}
+
+	public void setSecteurL(String secteurL) {
+		this.secteurL = secteurL;
+	}
+
+	public void setFirmL(String firmL) {
+		this.firmL = firmL;
+	}
+	
+	public String getSecteurP() {
+		return secteurP;
+	}
+
+	public String getFirmP() {
+		return firmP;
+	}
+
+	public void setSecteurP(String secteurP) {
+		this.secteurP = secteurP;
+	}
+
+	public void setFirmP(String firmP) {
+		this.firmP = firmP;
 	}
 
 	public List<List<String>> getResultatL() {
 		return resultatL;
 	}
 
-	public String getEmail() {
-		return email;
+	public List<List<String>> getResultatP() {
+		return resultatP;
+	}
+	
+	public Utilisateur getUtilisateur() {
+		return utilisateur;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUtilisateur(Utilisateur utilisateur) {
+		this.utilisateur = utilisateur;
 	}
+	
+	
 }

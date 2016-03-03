@@ -20,6 +20,7 @@ public class ContratDao {
 	private static final String JPQL_SELECT_CONTRATS_V = "SELECT so.nom, se.vSecteur, v.dateDepart, v.prixDepart, u.nom, u.prenom FROM Contrat c, Vente v, Investisseur i, Utilisateur u, Societe so, Secteur se WHERE se.idSecteur=so.idSecteur and so.idSociete=c.idSociete and c.idContrat=v.idContrat and v.idInvestisseur=i.idInvestisseur and i.idUtilisateur=u.idUtilisateur";
 	private static final String JPQL_SELECT_CONTRATS_L = "SELECT so.nom, se.vSecteur, l.dateLog, l.prixLog, l.vLog, u.nom, u.prenom FROM Contrat c, Log l, Investisseur i, Utilisateur u, Societe so, Secteur se WHERE se.idSecteur=so.idSecteur and so.idSociete=c.idSociete and c.idContrat=l.idContrat and l.idInvestisseur=i.idInvestisseur and i.idUtilisateur=u.idUtilisateur";
 	private static final String JPQL_SELECT_CONTRATS_LID = "SELECT so.nom, se.vSecteur, l.dateLog, l.prixLog, l.vLog FROM Contrat c, Log l, Investisseur i, Utilisateur u, Societe so, Secteur se WHERE se.idSecteur=so.idSecteur and so.idSociete=c.idSociete and c.idContrat=l.idContrat and l.idInvestisseur=i.idInvestisseur and i.idUtilisateur=u.idUtilisateur and u.email=:email ORDER BY l.dateLog DESC";
+	private static final String JPQL_SELECT_CONTRATS_PID = "SELECT so.nom, se.vSecteur, p.dateAchat, p.prixAchat, c.idContrat FROM Contrat c, Possession p, Investisseur i, Utilisateur u, Societe so, Secteur se WHERE se.idSecteur=so.idSecteur and so.idSociete=c.idSociete and c.idContrat=p.idContrat and p.idInvestisseur=i.idInvestisseur and i.idUtilisateur=u.idUtilisateur and i.idUtilisateur=:idU";
 	
 	public List<Map<String, String> > rechercheAdminP() {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Test");
@@ -94,6 +95,31 @@ public class ContratDao {
     			parametres.put("dateLog", String.valueOf(res[2]));
     			parametres.put("prixLog", String.valueOf(res[3]));
     			parametres.put("vLog", String.valueOf(res[4]));
+    			resultat.add(parametres);
+    		}
+        } catch ( NoResultException e ) {
+            return null;
+        } catch ( Exception e ) {
+            throw new DAOException( e );
+        }		
+		return resultat;
+	}
+	
+	public List<Map<String, String> > rechercheInvestP(int idU) {
+		List<Map<String, String> > resultat = new ArrayList<Map<String, String> >();
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Test");
+		EntityManager em = emf.createEntityManager();
+		Query requete = em.createQuery(JPQL_SELECT_CONTRATS_PID);
+		requete.setParameter( "idU", idU );
+        try {
+        	List<Object[]> resultList = requete.getResultList();
+    		for (Object[] res : resultList) {
+    			Map<String, String> parametres = new HashMap<String, String>();
+    			parametres.put("societe", String.valueOf(res[0]));
+    			parametres.put("secteur", String.valueOf(res[1]));
+    			parametres.put("dateAchat", String.valueOf(res[2]));
+    			parametres.put("prixAchat", String.valueOf(res[3]));
+    			parametres.put("idContrat", String.valueOf(res[4]));
     			resultat.add(parametres);
     		}
         } catch ( NoResultException e ) {
