@@ -8,16 +8,20 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import dao.ContratDao;
+import dao.EnchereDao;
+import dao.InfoDao;
 import dao.InvestisseurDao;
 import dao.LogDao;
 import dao.PossessionDao;
 import dao.VenteDao;
+import entities.Enchere;
 import entities.Log;
 import entities.Utilisateur;
 import entities.Vente;
@@ -25,42 +29,79 @@ import entities.Vente;
 @ManagedBean
 @SessionScoped
 public class AchatVenteBean {
-	
+
 	private Utilisateur utilisateur;
 	private int idInvestisseur = 0;
 	private String secteurL = " ";
 	private String firmL = " ";
 	private String secteurP = " ";
 	private String firmP = " ";
-	
+	private String secteurI = " ";
+	private String firmI = " ";
+
 	private List<List<String>> resultatL;
 	private List<Map<String, String>> rechercheCL = new ArrayList<Map<String, String>>();
 	
-	private int idContrat=0;
-	private String dateAchat;
-	private float prixAchat;
-	
-	private float prix=0;
+	private List<List<String>> resultatI;
+	private List<Map<String, String>> rechercheI = new ArrayList<Map<String, String>>();
+
 	private List<List<String>> resultatP;
 	private List<Map<String, String>> recherchePossessions = new ArrayList<Map<String, String>>();
-	
+
+	private float prix = 0;
+	private int idContrat = 0;
+	private String dateAchat;
+	private float prixAchat;
+	private boolean estEnchere = false;
+
+	@NotNull(message = "Veuillez saisir une date")
+	@Pattern(regexp = "((20)[0-9]{2})-((0?[1-9])|1[012])-((0?[1-9])|(1[0-9])|(2[0-9])|(3[01]))", message = "Merci de saisir une date valide")
+	private String dateEnchere;
+
+	@NotNull(message = "Veuillez saisir une heure")
+	@Pattern(regexp = "([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]", message = "Merci de saisir une heure valide")
+	private String heureEnchere;
+
+
+
 	@EJB
 	private ContratDao contratDao;
 	@EJB
 	private InvestisseurDao investisseurDao;
 	@EJB
-    private LogDao logDao;
+	private LogDao logDao;
 	@EJB
-    private PossessionDao possessionDao;
+	private PossessionDao possessionDao;
 	@EJB
-    private VenteDao venteDao;
-	
+	private VenteDao venteDao;
+	@EJB
+	private InfoDao infoDao;
+	@EJB
+	private EnchereDao enchereDao;
+
 	public void rechercheIdInvest() {
-		if(idInvestisseur==0)
+		if (idInvestisseur == 0)
 			idInvestisseur = investisseurDao.getIdInvestisseur(utilisateur.getIdUtilisateur());
 	}
+	
+	public void rechercheInfos() {
+		resultatI = new ArrayList<List<String>>();
+		if (rechercheI.isEmpty())
+			rechercheI = infoDao.rechercheInfos();
+		for (Map<String, String> entry : rechercheI) {
+			if ((entry.containsValue(secteurI) || secteurI.equals(" "))
+					&& (entry.containsValue(firmI) || firmI.equals(" "))) {
+				List<String> res = new ArrayList<String>();
+				for (Map.Entry<String, String> entryParam : entry.entrySet()) {
+					String valeurParam = entryParam.getValue();
+					res.add(valeurParam);
+				}
+				resultatI.add(res);
+			}
+		}
+	}
 
-	public void recherchePossessions(){
+	public void recherchePossessions() {
 		resultatP = new ArrayList<List<String>>();
 		if (recherchePossessions.isEmpty())
 			recherchePossessions = contratDao.rechercheInvestP(utilisateur.getIdUtilisateur());
@@ -76,7 +117,7 @@ public class AchatVenteBean {
 			}
 		}
 	}
-	
+
 	public void rechercheContratL() {
 		resultatL = new ArrayList<List<String>>();
 		if (rechercheCL.isEmpty())
@@ -93,37 +134,51 @@ public class AchatVenteBean {
 			}
 		}
 	}
-	
-	public void vendre() throws ParseException{
+
+	public void vendre() throws ParseException {
 		Log log = new Log();
 		log.setIdContrat(idContrat);
 		log.setIdInvestisseur(idInvestisseur);
-		log.setVLog((byte)1);
+		log.setVLog((byte) 1);
 		log.setPrixLog(prixAchat);
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-	    Date parsedDate = dateFormat.parse(dateAchat);
-	    Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
-	    log.setDateLog(timestamp);
-	    // CREATION LOG
-	    logDao.creer(log);
-	    // SUPPRESSION POSSESSION
-	    possessionDao.delete(idInvestisseur, idContrat);
-	    // CREATION VENTE
-	    Timestamp date = new Timestamp( System.currentTimeMillis() );
-	    Vente vente = new Vente();
-	    vente.setDateDepart(date);
-	    vente.setIdContrat(idContrat);
-	    vente.setIdInvestisseur(idInvestisseur);
-	    vente.setPrixDepart(prix);
-	    venteDao.creer(vente);
-	    recherchePossessions = new ArrayList<Map<String, String>>();
-	    rechercheCL = new ArrayList<Map<String, String>>();
-	    rechercheContratL();
-	    recherchePossessions();
-	    idContrat=0;
-	    prix=0;
+		Date parsedDate = dateFormat.parse(dateAchat);
+		Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+		log.setDateLog(timestamp);
+		// CREATION LOG
+		logDao.creer(log);
+		// SUPPRESSION POSSESSION
+		possessionDao.delete(idInvestisseur, idContrat);
+		// CREATION VENTE
+		Timestamp date = new Timestamp(System.currentTimeMillis());
+		Vente vente = new Vente();
+		vente.setDateDepart(date);
+		vente.setIdContrat(idContrat);
+		vente.setIdInvestisseur(idInvestisseur);
+		vente.setPrixDepart(prix);
+		venteDao.creer(vente);
+		if (estEnchere == true) {
+			Enchere enchere = new Enchere();
+			String full_date=dateEnchere+" "+heureEnchere;
+			parsedDate = dateFormat.parse(full_date);
+			timestamp = new java.sql.Timestamp(parsedDate.getTime());
+			enchere.setDateFinal(timestamp);
+			enchere.setIdContrat(idContrat);
+			enchere.setIdPossesseur(idInvestisseur);
+			enchere.setNbEncheres(0);
+			enchere.setPrixFinal(prix);
+			enchereDao.creer(enchere);
+			estEnchere = false;
+		}
+		recherchePossessions = new ArrayList<Map<String, String>>();
+		rechercheCL = new ArrayList<Map<String, String>>();
+		rechercheContratL();
+		recherchePossessions();
+		idContrat = 0;
+		prix = 0;
+
 	}
-	
+
 	public int getIdContrat() {
 		return idContrat;
 	}
@@ -171,7 +226,23 @@ public class AchatVenteBean {
 	public void setFirmL(String firmL) {
 		this.firmL = firmL;
 	}
-	
+
+	public String getFirmI() {
+		return firmI;
+	}
+
+	public void setFirmI(String firmI) {
+		this.firmI = firmI;
+	}
+
+	public String getSecteurI() {
+		return secteurI;
+	}
+
+	public void setSecteurI(String secteurI) {
+		this.secteurI = secteurI;
+	}
+
 	public String getSecteurP() {
 		return secteurP;
 	}
@@ -188,6 +259,30 @@ public class AchatVenteBean {
 		this.firmP = firmP;
 	}
 
+	public boolean getEstEnchere() {
+		return estEnchere;
+	}
+
+	public void setEstEnchere(boolean estEnchere) {
+		this.estEnchere = estEnchere;
+	}
+
+	public String getDateEnchere() {
+		return dateEnchere;
+	}
+
+	public void setDateEnchere(String dateE) {
+		this.dateEnchere = dateE;
+	}
+
+	public String getHeureEnchere() {
+		return heureEnchere;
+	}
+
+	public void setHeureEnchere(String heureEnchere) {
+		this.heureEnchere = heureEnchere;
+	}
+
 	public List<List<String>> getResultatL() {
 		return resultatL;
 	}
@@ -196,6 +291,10 @@ public class AchatVenteBean {
 		return resultatP;
 	}
 	
+	public List<List<String>> getResultatI() {
+		return resultatI;
+	}
+
 	public Utilisateur getUtilisateur() {
 		return utilisateur;
 	}
@@ -203,5 +302,5 @@ public class AchatVenteBean {
 	public void setUtilisateur(Utilisateur utilisateur) {
 		this.utilisateur = utilisateur;
 	}
-	
+
 }

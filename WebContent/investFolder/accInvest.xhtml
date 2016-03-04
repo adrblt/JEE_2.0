@@ -2,7 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:c="http://java.sun.com/jstl/core">
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:rich="http://richfaces.org/rich">
 <h:head>
 	<meta charset="utf-8" />
 	<title>Accueil Investisseur</title>
@@ -15,7 +17,68 @@
 		<f:viewAction action="#{achatVenteBean.rechercheIdInvest()}" />
 		<f:viewAction action="#{achatVenteBean.rechercheContratL()}" />
 		<f:viewAction action="#{achatVenteBean.recherchePossessions()}" />
+		<f:viewAction action="#{achatVenteBean.rechercheInfos()}" />
 	</f:metadata>
+
+	<!-- PARTIE INFOS -->
+	<h:form id="formInfos">
+		<fieldset>
+			<legend>INFOS</legend>
+			<f:ajax event="click" />
+
+			<h:selectOneMenu value="#{achatVenteBean.secteurI}">
+				<f:selectItem itemValue=" " itemLabel=" " />
+				<f:selectItems value="#{secteurBean.societes}" var="secteur"
+					itemValue="#{secteur.VSecteur}" itemLabel="#{secteur.VSecteur}" />
+				<f:ajax listener="#{achatVenteBean.rechercheInfos()}"
+					render="infos" />
+				<f:ajax event="click" />
+			</h:selectOneMenu>
+
+			<h:selectOneMenu value="#{achatVenteBean.firmI}">
+				<f:selectItem itemValue=" " itemLabel=" " />
+				<f:selectItems value="#{societeBean.societes}" var="societe"
+					itemValue="#{societe.nom}" itemLabel="#{societe.nom}" />
+				<f:ajax listener="#{achatVenteBean.rechercheInfos()}"
+					render="infos" />
+				<f:ajax event="click" />
+			</h:selectOneMenu>
+
+			<h:panelGroup id="infos">
+				<br />
+				<h:dataTable value="#{achatVenteBean.resultatI}" var="row">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Societe" />
+						</f:facet>
+						<h:outputText value="#{row[2]}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Secteur" />
+						</f:facet>
+						<h:outputText value="#{row[0]}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Date" />
+						</f:facet>
+						<h:outputText value="#{row[1]}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Info" />
+						</f:facet>
+						<h:outputText value="#{row[3]}" />
+					</h:column>
+
+				</h:dataTable>
+			</h:panelGroup>
+		</fieldset>
+	</h:form>
 
 	<!-- PARTIE POSSESSION -->
 	<h:form id="formPossessions">
@@ -99,12 +162,46 @@
 					</h:inputText>
 					<h:message id="validerMessage" for="valider" errorClass="erreur" />
 					<br />
+
+					<h:outputLabel> Mettre aux enchères
+					</h:outputLabel>
+					<h:selectBooleanCheckbox value="#{achatVenteBean.estEnchere}">
+						<f:ajax render="panelE" />
+					</h:selectBooleanCheckbox>
+					<br />
+
+					<h:panelGroup id="panelE">
+						<h:panelGroup rendered="#{achatVenteBean.estEnchere=='true'}">
+							<h:outputLabel for="date"> Date finale enchère (yyyy-mm-dd) : <span
+									class="requis">*</span>
+							</h:outputLabel>
+							<h:inputText id="date" value="#{achatVenteBean.dateEnchere}"
+								binding="#{composantDate}">
+								<f:ajax event="blur" execute="date heure"
+									render="validerDate validerheure" />
+							</h:inputText>
+							<h:message id="validerDate" for="date" errorClass="erreur" />
+							<br />
+
+							<h:outputLabel for="heure"> Heure finale enchère (hh:mm:ss) : <span
+									class="requis">*</span>
+							</h:outputLabel>
+							<h:inputText id="heure" value="#{achatVenteBean.heureEnchere}">
+								<f:validator validatorId="dateValidator" />
+								<f:attribute name="composantDate" value="#{composantDate}" />
+								<f:ajax event="blur" render="validerheure" />
+							</h:inputText>
+							<h:message id="validerheure" for="heure" errorClass="erreur" />
+							<br />
+						</h:panelGroup>
+					</h:panelGroup>
+
 					<h:commandButton value="Valider"
 						action="#{achatVenteBean.vendre()}" styleClass="sansLabel" />
 					<h:commandButton value="Annuler" styleClass="sansLabel"
 						converter="javax.faces.Integer" immediate="true">
-						<f:setPropertyActionListener
-							target="#{achatVenteBean.idContrat}" value="0" />
+						<f:setPropertyActionListener target="#{achatVenteBean.idContrat}"
+							value="0" />
 					</h:commandButton>
 
 				</h:panelGroup>
@@ -114,7 +211,7 @@
 		</fieldset>
 	</h:form>
 
-	<!-- PARTIE LOG -->
+	<!-- PARTIE LOGS -->
 	<h:form id="formLog">
 		<fieldset>
 			<legend>LOGS</legend>
