@@ -6,6 +6,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import entities.Investisseur;
 import entities.Possession;
 
 @Stateless
@@ -25,6 +26,20 @@ public class PossessionDao {
             em.flush();
             em.close();
             emf.close();
+		} catch (Exception e) {
+			throw new DAOException(e);
+		}
+	}
+	
+	public void creer(Possession possession) throws DAOException {
+		try {
+			EntityManagerFactory emf = Persistence.createEntityManagerFactory("Test");
+			EntityManager em = emf.createEntityManager();
+			em.getTransaction().begin();
+			em.persist(possession);
+			em.flush();
+			em.close();
+			emf.close();
 		} catch (Exception e) {
 			throw new DAOException(e);
 		}

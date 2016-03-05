@@ -8,11 +8,11 @@ public class Investisseur implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue( strategy = GenerationType.IDENTITY )
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idInvestisseur;
 
 	private int idUtilisateur;
-	
+
 	private float vCompte;
 
 	public Investisseur() {

@@ -91,7 +91,7 @@
 				<f:selectItems value="#{secteurBean.societes}" var="secteur"
 					itemValue="#{secteur.VSecteur}" itemLabel="#{secteur.VSecteur}" />
 				<f:ajax listener="#{achatVenteBean.rechercheAchat()}"
-					render="encheres" />
+					render="encheres achatI" />
 				<f:ajax event="click" />
 			</h:selectOneMenu>
 
@@ -100,7 +100,7 @@
 				<f:selectItems value="#{societeBean.societes}" var="societe"
 					itemValue="#{societe.nom}" itemLabel="#{societe.nom}" />
 				<f:ajax listener="#{achatVenteBean.rechercheAchat()}"
-					render="encheres" />
+					render="encheres achatI" />
 				<f:ajax event="click" />
 			</h:selectOneMenu>
 
@@ -197,6 +197,85 @@
 						converter="javax.faces.Integer" immediate="true">
 						<f:setPropertyActionListener target="#{achatVenteBean.idContratA}"
 							value="0" />
+						<f:setPropertyActionListener target="#{achatVenteBean.offre}"
+							value="0" />
+					</h:commandButton>
+				</h:panelGroup>
+
+			</h:panelGroup>
+
+			<h:panelGroup id="achatI">
+				<br />
+				<span>ACHATS IMMEDIATS</span>
+				<br />
+				<h:dataTable value="#{achatVenteBean.resultatAchatI}" var="row">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Societe" />
+						</f:facet>
+						<h:outputText value="#{row[4]}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Secteur" />
+						</f:facet>
+						<h:outputText value="#{row[0]}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Date mis en vente" />
+						</f:facet>
+						<h:outputText value="#{row[3]}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Prix" />
+						</f:facet>
+						<h:outputText value="#{row[2]}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Acheter" />
+						</f:facet>
+						<h:commandButton value="Acheter" styleClass="sansLabel"
+							converter="javax.faces.Float">
+							<f:setPropertyActionListener
+								target="#{achatVenteBean.idContratAI}" value="#{row[5]}" />
+							<f:setPropertyActionListener target="#{achatVenteBean.prixAchat}"
+								value="#{row[2]}" />
+							<f:setPropertyActionListener target="#{achatVenteBean.idVendeur}"
+								value="#{row[1]}" />
+						</h:commandButton>
+					</h:column>
+				</h:dataTable>
+
+				<h:panelGroup rendered="#{achatVenteBean.idContratAI!=0}">
+					<h:outputLabel for="prixAI"> Confirmez le prix : <span
+							class="requis">*</span>
+					</h:outputLabel>
+					<h:inputText id="prixAI" value="#{achatVenteBean.offre}"
+						converter="javax.faces.Float">
+						<f:validator validatorId="achatValidator" />
+						<f:attribute name="prixActuel" value="#{achatVenteBean.prixAchat}" />
+						<f:attribute name="compte"
+							value="#{achatVenteBean.investisseur.vCompte}" />
+						<f:ajax event="blur" render="prixAIMessage" />
+					</h:inputText>
+					<h:message id="prixAIMessage" for="prixAI" errorClass="erreur" />
+					<br />
+
+					<h:commandButton value="Valider"
+						action="#{achatVenteBean.acheter()}" styleClass="sansLabel" />
+					<h:commandButton value="Annuler" styleClass="sansLabel"
+						converter="javax.faces.Integer" immediate="true">
+						<f:setPropertyActionListener
+							target="#{achatVenteBean.idContratAI}" value="0" />
+						<f:setPropertyActionListener target="#{achatVenteBean.offre}"
+							value="0" />
 					</h:commandButton>
 				</h:panelGroup>
 
@@ -214,7 +293,7 @@
 				<f:selectItems value="#{secteurBean.societes}" var="secteur"
 					itemValue="#{secteur.VSecteur}" itemLabel="#{secteur.VSecteur}" />
 				<f:ajax listener="#{achatVenteBean.recherchePossessions()}"
-					render="pos mesEncheres" />
+					render="pos mesEncheres mesVentes" />
 				<f:ajax event="click" />
 			</h:selectOneMenu>
 
@@ -223,7 +302,7 @@
 				<f:selectItems value="#{societeBean.societes}" var="societe"
 					itemValue="#{societe.nom}" itemLabel="#{societe.nom}" />
 				<f:ajax listener="#{achatVenteBean.recherchePossessions()}"
-					render="pos mesEncheres" />
+					render="pos mesEncheres mesVentes" />
 				<f:ajax event="click" />
 			</h:selectOneMenu>
 
@@ -384,6 +463,43 @@
 					<h:column>
 						<f:facet name="header">
 							<h:outputText value="Nombre d'enchères" />
+						</f:facet>
+						<h:outputText value="#{row[1]}" />
+					</h:column>
+
+				</h:dataTable>
+
+			</h:panelGroup>
+
+			<h:panelGroup id="mesVentes">
+				<br />
+				<span>MES VENTES</span>
+				<br />
+				<h:dataTable value="#{achatVenteBean.resultatMesVentes}" var="row">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Societe" />
+						</f:facet>
+						<h:outputText value="#{row[3]}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Secteur" />
+						</f:facet>
+						<h:outputText value="#{row[0]}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Date mis en vente" />
+						</f:facet>
+						<h:outputText value="#{row[2]}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Prix" />
 						</f:facet>
 						<h:outputText value="#{row[1]}" />
 					</h:column>

@@ -75,7 +75,9 @@ public class InvestisseurDao {
 		requete.setParameter("idInvest", idInvest);
 		Investisseur investisseur = (Investisseur) requete.getSingleResult();
 		em.getTransaction().begin();
-		investisseur.setvCompte(value);
+		float compte = investisseur.getvCompte();
+		compte+=value;
+		investisseur.setvCompte(compte);
 		em.flush();
 		em.close();
 		emf.close();

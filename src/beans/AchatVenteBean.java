@@ -24,6 +24,7 @@ import dao.VenteDao;
 import entities.Enchere;
 import entities.Investisseur;
 import entities.Log;
+import entities.Possession;
 import entities.Utilisateur;
 import entities.Vente;
 
@@ -57,6 +58,9 @@ public class AchatVenteBean {
 	private List<List<String>> resultatMesEncheres;
 	private List<Map<String, String>> rechercheMesEncheres = new ArrayList<Map<String, String>>();
 
+	private List<List<String>> resultatMesVentes;
+	private List<Map<String, String>> rechercheMesVentes = new ArrayList<Map<String, String>>();
+
 	private List<List<String>> resultatAchatI;
 	private List<Map<String, String>> rechercheAchatI = new ArrayList<Map<String, String>>();
 
@@ -68,6 +72,8 @@ public class AchatVenteBean {
 	
 	private float offre = 0;
 	private int idContratA = 0;	
+	private int idContratAI = 0;
+	private int idVendeur;
 
 	@NotNull(message = "Veuillez saisir une date")
 	@Pattern(regexp = "((20)[0-9]{2})-((0?[1-9])|1[012])-((0?[1-9])|(1[0-9])|(2[0-9])|(3[01]))", message = "Merci de saisir une date valide")
@@ -119,6 +125,7 @@ public class AchatVenteBean {
 	public void recherchePossessions(){
 		recherchePossessionsAchats();
 		rechercheMesEnchere();
+		rechercheMesVentes();
 	}
 
 	public void recherchePossessionsAchats() {
@@ -172,8 +179,43 @@ public class AchatVenteBean {
 		}
 	}
 	
+	public void rechercheAchatsI(){
+		resultatAchatI = new ArrayList<List<String>>();
+		if (rechercheAchatI.isEmpty())
+			rechercheAchatI = contratDao.rechercheInvestAI(investisseur.getIdInvestisseur());
+		for (Map<String, String> entry : rechercheAchatI) {
+			if ((entry.containsValue(secteurA) || secteurA.equals(" "))
+					&& (entry.containsValue(firmA) || firmA.equals(" "))) {
+				List<String> res = new ArrayList<String>();
+				for (Map.Entry<String, String> entryParam : entry.entrySet()) {
+					String valeurParam = entryParam.getValue();
+					res.add(valeurParam);
+				}
+				resultatAchatI.add(res);
+			}
+		}
+	}
+	
+	public void rechercheMesVentes(){
+		resultatMesVentes = new ArrayList<List<String>>();
+		if (rechercheMesVentes.isEmpty())
+			rechercheMesVentes = contratDao.rechercheInvestMAI(investisseur.getIdInvestisseur());
+		for (Map<String, String> entry : rechercheMesVentes) {
+			if ((entry.containsValue(secteurP) || secteurP.equals(" "))
+					&& (entry.containsValue(firmP) || firmP.equals(" "))) {
+				List<String> res = new ArrayList<String>();
+				for (Map.Entry<String, String> entryParam : entry.entrySet()) {
+					String valeurParam = entryParam.getValue();
+					res.add(valeurParam);
+				}
+				resultatMesVentes.add(res);
+			}
+		}
+	}
+	
 	public void rechercheAchat(){
 		rechercheEnchere();
+		rechercheAchatsI();
 	}
 
 	public void rechercheContratL() {
@@ -245,8 +287,38 @@ public class AchatVenteBean {
 		offre=0;
 	}
 	
-	public void acheter(){
-		//investisseurDao.updateCompte(investisseur.getIdInvestisseur(), 700);
+	public void acheter() throws InterruptedException{
+		// CREATION LOG
+		Log log = new Log();
+		log.setIdContrat(idContratAI);
+		log.setIdInvestisseur(idVendeur);
+		log.setVLog((byte) 0);
+		log.setPrixLog(prixAchat);
+		Timestamp date = new Timestamp( System.currentTimeMillis() );
+		log.setDateLog(date);
+		logDao.creer(log);
+		//CHANGEMENT COMPTES
+		investisseurDao.updateCompte(idVendeur, prixAchat); //Vendeur
+		investisseurDao.updateCompte(investisseur.getIdInvestisseur(), -prixAchat); //Acheteur
+		//CREATION POSSESSION
+		Possession possession = new Possession();
+		possession.setDateAchat(date);
+		possession.setIdContrat(idContratAI);
+		possession.setIdInvestisseur(investisseur.getIdInvestisseur());
+		possession.setPrixAchat(prixAchat);
+		possessionDao.creer(possession);
+		//SUPPRESSION VENTES
+		venteDao.delete(idVendeur, idContratAI);
+		
+		recherchePossessions = new ArrayList<Map<String, String>>();
+		rechercheEncheres = new ArrayList<Map<String, String>>();
+		rechercheMesEncheres = new ArrayList<Map<String, String>>();
+		rechercheMesVentes = new ArrayList<Map<String, String>>();
+		rechercheAchatI = new ArrayList<Map<String, String>>();
+		recherchePossessions();
+		rechercheAchat();
+		idContratA=0;
+		offre=0;
 	}
 
 	public Investisseur getInvestisseur() {
@@ -389,6 +461,22 @@ public class AchatVenteBean {
 		this.idContratA = idContratA;
 	}
 
+	public int getIdContratAI() {
+		return idContratAI;
+	}
+
+	public void setIdContratAI(int idContratAI) {
+		this.idContratAI = idContratAI;
+	}
+
+	public int getIdVendeur() {
+		return idVendeur;
+	}
+
+	public void setIdVendeur(int idVendeur) {
+		this.idVendeur = idVendeur;
+	}
+
 	public List<List<String>> getResultatL() {
 		return resultatL;
 	}
@@ -411,6 +499,10 @@ public class AchatVenteBean {
 	
 	public List<List<String>> getResultatAchatI() {
 		return resultatAchatI;
+	}
+	
+	public List<List<String>> getResultatMesVentes() {
+		return resultatMesVentes;
 	}
 
 	public Utilisateur getUtilisateur() {
