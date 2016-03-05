@@ -54,6 +54,9 @@ public class AchatVenteBean {
 	private List<List<String>> resultatEncheres;
 	private List<Map<String, String>> rechercheEncheres = new ArrayList<Map<String, String>>();
 	
+	private List<List<String>> resultatMesEncheres;
+	private List<Map<String, String>> rechercheMesEncheres = new ArrayList<Map<String, String>>();
+
 	private List<List<String>> resultatAchatI;
 	private List<Map<String, String>> rechercheAchatI = new ArrayList<Map<String, String>>();
 
@@ -64,7 +67,7 @@ public class AchatVenteBean {
 	private boolean estEnchere = false;
 	
 	private float offre = 0;
-	private int idContratA = 0;
+	private int idContratA = 0;	
 
 	@NotNull(message = "Veuillez saisir une date")
 	@Pattern(regexp = "((20)[0-9]{2})-((0?[1-9])|1[012])-((0?[1-9])|(1[0-9])|(2[0-9])|(3[01]))", message = "Merci de saisir une date valide")
@@ -112,8 +115,13 @@ public class AchatVenteBean {
 			}
 		}
 	}
+	
+	public void recherchePossessions(){
+		recherchePossessionsAchats();
+		rechercheMesEnchere();
+	}
 
-	public void recherchePossessions() {
+	public void recherchePossessionsAchats() {
 		resultatP = new ArrayList<List<String>>();
 		if (recherchePossessions.isEmpty())
 			recherchePossessions = contratDao.rechercheInvestP(utilisateur.getIdUtilisateur());
@@ -133,7 +141,7 @@ public class AchatVenteBean {
 	public void rechercheEnchere(){
 		resultatEncheres = new ArrayList<List<String>>();
 		if (rechercheEncheres.isEmpty())
-			rechercheEncheres = contratDao.rechercheInvestE();
+			rechercheEncheres = contratDao.rechercheInvestE(investisseur.getIdInvestisseur());
 		for (Map<String, String> entry : rechercheEncheres) {
 			if ((entry.containsValue(secteurA) || secteurA.equals(" "))
 					&& (entry.containsValue(firmA) || firmA.equals(" "))) {
@@ -143,6 +151,23 @@ public class AchatVenteBean {
 					res.add(valeurParam);
 				}
 				resultatEncheres.add(res);
+			}
+		}
+	}
+	
+	public void rechercheMesEnchere(){
+		resultatMesEncheres = new ArrayList<List<String>>();
+		if (rechercheMesEncheres.isEmpty())
+			rechercheMesEncheres = contratDao.rechercheInvestME(investisseur.getIdInvestisseur());
+		for (Map<String, String> entry : rechercheMesEncheres) {
+			if ((entry.containsValue(secteurP) || secteurP.equals(" "))
+					&& (entry.containsValue(firmP) || firmP.equals(" "))) {
+				List<String> res = new ArrayList<String>();
+				for (Map.Entry<String, String> entryParam : entry.entrySet()) {
+					String valeurParam = entryParam.getValue();
+					res.add(valeurParam);
+				}
+				resultatMesEncheres.add(res);
 			}
 		}
 	}
@@ -212,8 +237,20 @@ public class AchatVenteBean {
 
 	}
 	
+	public void encherir(){
+		enchereDao.update(idContratA, investisseur.getIdInvestisseur(), offre);
+		rechercheEncheres = new ArrayList<Map<String, String>>();
+		rechercheEnchere();
+		idContratA=0;
+		offre=0;
+	}
+	
 	public void acheter(){
-		investisseurDao.updateCompte(investisseur.getIdInvestisseur(), 700);
+		//investisseurDao.updateCompte(investisseur.getIdInvestisseur(), 700);
+	}
+
+	public Investisseur getInvestisseur() {
+		return investisseur;
 	}
 
 	public int getIdContrat() {
@@ -366,6 +403,10 @@ public class AchatVenteBean {
 	
 	public List<List<String>> getResultatEncheres() {
 		return resultatEncheres;
+	}
+	
+	public List<List<String>> getResultatMesEncheres() {
+		return resultatMesEncheres;
 	}
 	
 	public List<List<String>> getResultatAchatI() {

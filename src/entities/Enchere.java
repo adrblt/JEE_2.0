@@ -26,6 +26,10 @@ public class Enchere implements Serializable {
 
 	public Enchere() {
 	}
+	
+	public void incNbEncheres(){
+		this.nbEncheres++;
+	}
 
 	public int getIdEnchere() {
 		return this.idEnchere;

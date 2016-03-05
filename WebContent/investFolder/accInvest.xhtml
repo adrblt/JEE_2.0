@@ -19,6 +19,7 @@
 		<f:viewAction action="#{achatVenteBean.recherchePossessions()}" />
 		<f:viewAction action="#{achatVenteBean.rechercheInfos()}" />
 		<f:viewAction action="#{achatVenteBean.rechercheAchat()}" />
+		<f:viewAction action="#{achatVenteBean.rechercheMesEnchere()}" />
 	</f:metadata>
 
 	<!-- PARTIE INFOS -->
@@ -162,9 +163,13 @@
 							<h:outputText value="Encherir" />
 						</f:facet>
 						<h:commandButton value="Encherir" styleClass="sansLabel"
-							converter="javax.faces.Integer">
+							converter="javax.faces.Float">
 							<f:setPropertyActionListener
 								target="#{achatVenteBean.idContratA}" value="#{row[7]}" />
+							<f:setPropertyActionListener target="#{achatVenteBean.prixAchat}"
+								value="#{row[4]}" />
+							<f:setPropertyActionListener target="#{achatVenteBean.dateAchat}"
+								value="#{row[6]}" />
 						</h:commandButton>
 					</h:column>
 				</h:dataTable>
@@ -175,12 +180,26 @@
 					</h:outputLabel>
 					<h:inputText id="offre" value="#{achatVenteBean.offre}"
 						converter="javax.faces.Float">
+						<f:validator validatorId="enchereValidator" />
+						<f:attribute name="dateActuelle"
+							value="#{achatVenteBean.dateAchat}" />
+						<f:attribute name="prixActuel" value="#{achatVenteBean.prixAchat}" />
+						<f:attribute name="compte"
+							value="#{achatVenteBean.investisseur.vCompte}" />
 						<f:ajax event="blur" render="offreMessage" />
 					</h:inputText>
 					<h:message id="offreMessage" for="offre" errorClass="erreur" />
 					<br />
+
+					<h:commandButton value="Valider"
+						action="#{achatVenteBean.encherir()}" styleClass="sansLabel" />
+					<h:commandButton value="Annuler" styleClass="sansLabel"
+						converter="javax.faces.Integer" immediate="true">
+						<f:setPropertyActionListener target="#{achatVenteBean.idContratA}"
+							value="0" />
+					</h:commandButton>
 				</h:panelGroup>
-				
+
 			</h:panelGroup>
 		</fieldset>
 	</h:form>
@@ -195,7 +214,7 @@
 				<f:selectItems value="#{secteurBean.societes}" var="secteur"
 					itemValue="#{secteur.VSecteur}" itemLabel="#{secteur.VSecteur}" />
 				<f:ajax listener="#{achatVenteBean.recherchePossessions()}"
-					render="pos" />
+					render="pos mesEncheres" />
 				<f:ajax event="click" />
 			</h:selectOneMenu>
 
@@ -204,11 +223,14 @@
 				<f:selectItems value="#{societeBean.societes}" var="societe"
 					itemValue="#{societe.nom}" itemLabel="#{societe.nom}" />
 				<f:ajax listener="#{achatVenteBean.recherchePossessions()}"
-					render="pos" />
+					render="pos mesEncheres" />
 				<f:ajax event="click" />
 			</h:selectOneMenu>
 
 			<h:panelGroup id="pos">
+				<br />
+				<span>MES ACHATS</span>
+				<br />
 				<h:dataTable value="#{achatVenteBean.resultatP}" var="row">
 
 					<h:column>
@@ -310,6 +332,64 @@
 					</h:commandButton>
 
 				</h:panelGroup>
+			</h:panelGroup>
+
+			<h:panelGroup id="mesEncheres">
+				<br />
+				<span>MES ENCHERES</span>
+				<br />
+				<h:dataTable value="#{achatVenteBean.resultatMesEncheres}" var="row">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Societe" />
+						</f:facet>
+						<h:outputText value="#{row[5]}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Secteur" />
+						</f:facet>
+						<h:outputText value="#{row[0]}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Date mis en vente" />
+						</f:facet>
+						<h:outputText value="#{row[3]}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Prix de départ" />
+						</f:facet>
+						<h:outputText value="#{row[2]}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Prix actuel" />
+						</f:facet>
+						<h:outputText value="#{row[4]}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Date limite" />
+						</f:facet>
+						<h:outputText value="#{row[6]}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Nombre d'enchères" />
+						</f:facet>
+						<h:outputText value="#{row[1]}" />
+					</h:column>
+
+				</h:dataTable>
+
 			</h:panelGroup>
 
 			<h:messages globalOnly="true" infoClass="info" />
