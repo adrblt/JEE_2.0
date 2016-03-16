@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>OceanTech</title>
+<!-- <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-8"> -->
+<!--<meta charset="ISO-8859-1"> -->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" media="screen" type="text/css" href="resources/default/css/main.css" />
+<link type="text/css" rel="stylesheet"
+	href="resources/default/jQuery/demo/css/demo.css" />
+<link type="text/css" rel="stylesheet"
+	href="resources/default/jQuery/dist/css/jquery.mmenu.all.css" />
+
+<script type="text/javascript"
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript"
+	src="resources/default/jQuery/dist/js/jquery.mmenu.min.all.js"></script>
+<script type="text/javascript">
+			$(function() {
+				$('nav#menu').mmenu({
+					extensions	: [ 'effect-slide', 'pageshadow' ],
+					header		: true,
+					searchfield	: true,
+					counters	: true,
+					footer		: {
+						add			: true,
+						content		: '<a href="mmenu.frebsite.nl"></a>'
+					}
+				});
+			});
+		</script>
+
+
+</head>
+
+<body>
+	<div id="page">
+		<div class="header">
+			<a href="#menu"></a> OceanTech
+		</div>
+		<p>
+			<a class="myaccount" href="login.html">&nbsp;&nbsp;&nbsp;Mon
+				Compte&nbsp;&nbsp;&nbsp;</a>
+		</p>
+
+
+		<nav id="menu">
+			<ul>
+				<li><a href="home.html"><span>HOME</span></a></li>
+				<li><a href="aboutus.html"><span>ABOUT US</span></a></li>
+				<li><a href="contactus.php">CONTACT US</a></li>
+			</ul>
+		</nav>
+	</div>
+
+
+	<div class="container">
+		<div class="blocAccueil">
+			<br />
+			<br /> <img class="finance" src="resources/default/img/finance.jpg" alt="" height=40%
+				width=60%> <br />
+			<br />
+			<br />
+
+			<table class="user">
+				<tr>
+					<td><img src="resources/default/img/invest.jpg" alt="" height="120" width="120"></td>
+					<td><img src="resources/default/img/member.png" alt="" height="120" width="120"></td>
+					<td rowspan=2>Nous proposons deux types de contrats
+						<ul class="blocktext">
+							<li>titre ou action</li>
+							<li>stock option</li>
+						</ul> a prix fixe ou aux encheres
+
+					</td>
+				</tr>
+				<tr>
+					<td>Investisseur</td>
+					<td>Membre Societe</td>
+				</tr>
+
+			</table>
+			<br />
+			<br />
+			<br />
+
+
+		</div>
+	</div>
+
+
+	<div class="footer">
+		<p class="suivez">
+			Suivez-nous sur <img src="resources/default/img/google.png" alt="" height="50"
+				width="50"> <img src="resources/default/img/google.png" alt="" height="45"
+				width="45"> <img src="resources/default/img/linkedin.png" alt="" height="45"
+				width="45">
+		</p>
+	</div>
+	<br />
+	<br />
+</body>
+</html>

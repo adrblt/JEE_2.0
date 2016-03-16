@@ -1,86 +1,117 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 <h:head>
-	<meta charset="utf-8" />
-	<title>Inscription</title>
-	<h:outputStylesheet library="default" name="css/form.css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>OceanTech</title>
+	<h:outputStylesheet library="default" name="css/main.css" />
+	<h:outputStylesheet library="default" name="css/style.css" />
+
+	<link type="text/css" rel="stylesheet"
+		href="resources/default/jQuery/demo/css/demo.css" />
+	<link type="text/css" rel="stylesheet"
+		href="resources/default/jQuery/dist/css/jquery.mmenu.all.css" />
+
+	<script type="text/javascript"
+		src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script type="text/javascript"
+		src="resources/default/jQuery/dist/js/jquery.mmenu.min.all.js"></script>
+	<script type="text/javascript">
+			$(function() {
+				$('nav#menu').mmenu({
+					extensions	: [ 'effect-slide', 'pageshadow' ],
+					header		: true,
+					searchfield	: true,
+					counters	: true,
+					footer		: {
+						add			: true,
+						content		: '<a href="mmenu.frebsite.nl"></a>'
+					}
+				});
+			});
+		</script>
 </h:head>
 <h:body>
-	<h:form id="formulaire">
-		<fieldset>
-			<legend>Inscription</legend>
+	<div id="page">
+		<div class="header">
+			<a href="#menu"></a> OceanTech
+		</div>
 
-			<h:outputLabel for="email"> Adresse email <span
-					class="requis">*</span>
-			</h:outputLabel>
-			<h:inputText id="email" value="#{inscrireBean.utilisateur.email}"
-				size="20" maxlength="60">
-				<f:ajax event="blur" render="emailMessage" />
-				<f:validator binding="#{existenceEmailValidator}" />
-			</h:inputText>
-			<h:message id="emailMessage" for="email" errorClass="erreur" />
+		<nav id="menu">
+			<ul>
+				<li><a href="home.html"><span>HOME</span></a></li>
+				<li><a href="aboutus.html"><span>ABOUT US</span></a></li>
+				<li><a href="contactus.php">CONTACT US</a></li>
+			</ul>
+		</nav>
+	</div>
+
+	<h:panelGroup layout="block" styleClass="container">
+		<h:panelGroup layout="block" styleClass="login">
 			<br />
-
-			<h:outputLabel for="motdepasse"> Mot de passe <span
-					class="requis">*</span>
-			</h:outputLabel>
-			<h:inputSecret id="motdepasse"
-				value="#{inscrireBean.utilisateur.mdp}"
-				binding="#{composantMotDePasse}" size="20" maxlength="20">
-				<f:ajax event="blur" execute="motdepasse confirmation"
-					render="motDePasseMessage confirmationMessage" />
-			</h:inputSecret>
-			<h:message id="motDePasseMessage" for="motdepasse"
-				errorClass="erreur" />
 			<br />
+			<h:panelGroup layout="block" styleClass="login-triangle" />
 
-			<h:outputLabel for="confirmation"> Confirmation du mot de passe <span
-					class="requis">*</span>
-			</h:outputLabel>
-			<h:inputSecret id="confirmation"
-				value="#{inscrireBean.utilisateur.mdp}" size="20" maxlength="20">
-				<f:validator validatorId="confirmationMDPValidator" />
-				<f:attribute name="composantMotDePasse"
-					value="#{composantMotDePasse}" />
-				<f:ajax event="blur" execute="motdepasse confirmation"
-					render="motDePasseMessage confirmationMessage" />
-			</h:inputSecret>
-			<h:message id="confirmationMessage" for="confirmation"
-				errorClass="erreur" />
-			<br />
+			<h2 class="login-header">Sign up</h2>
+			<h:form id="formulaire" styleClass="login-container">
+				<h:inputText id="email" a:placeholder="Email" value="#{inscrireBean.utilisateur.email}"
+					size="20" maxlength="60">
+					<f:ajax event="blur" render="emailMessage" />
+					<f:validator binding="#{existenceEmailValidator}" />
+				</h:inputText>
+				<h:message id="emailMessage" for="email" errorClass="erreur" />
+				<br />
 
-			<h:outputLabel for="nom"> Nom <span class="requis">*</span>
-			</h:outputLabel>
-			<h:inputText id="nom" value="#{inscrireBean.utilisateur.nom}"
-				size="20" maxlength="20">
-				<f:ajax event="blur" render="nomMessage" />
-			</h:inputText>
-			<h:message id="nomMessage" for="nom" errorClass="erreur" />
-			<br />
+				<h:inputSecret id="motdepasse" a:placeholder="Password"
+					value="#{inscrireBean.utilisateur.mdp}"
+					binding="#{composantMotDePasse}" size="20" maxlength="20">
+					<f:ajax event="blur" execute="motdepasse confirmation"
+						render="motDePasseMessage confirmationMessage" />
+				</h:inputSecret>
+				<h:message id="motDePasseMessage" for="motdepasse"
+					errorClass="erreur" />
+				<br />
 
-			<h:outputLabel for="prenom"> Prenom <span
-					class="requis">*</span>
-			</h:outputLabel>
-			<h:inputText id="prenom" value="#{inscrireBean.utilisateur.prenom}"
-				size="20" maxlength="20">
-				<f:ajax event="blur" render="preMessage" />
-			</h:inputText>
-			<h:message id="preMessage" for="prenom" errorClass="erreur" />
-			<br />
+				<h:inputSecret id="confirmation" a:placeholder="Password confirmation"
+					value="#{inscrireBean.utilisateur.mdp}" size="20" maxlength="20">
+					<f:validator validatorId="confirmationMDPValidator" />
+					<f:attribute name="composantMotDePasse"
+						value="#{composantMotDePasse}" />
+					<f:ajax event="blur" execute="motdepasse confirmation"
+						render="motDePasseMessage confirmationMessage" />
+				</h:inputSecret>
+				<h:message id="confirmationMessage" for="confirmation"
+					errorClass="erreur" />
+				<br />
 
-			<h:messages globalOnly="true" infoClass="info" />
+				<h:inputText id="nom" a:placeholder="Last name" value="#{inscrireBean.utilisateur.nom}"
+					size="20" maxlength="20">
+					<f:ajax event="blur" render="nomMessage" />
+				</h:inputText>
+				<h:message id="nomMessage" for="nom" errorClass="erreur" />
+				<br />
 
-			<h:commandButton value="Inscription"
-				action="#{inscrireBean.inscrire}" styleClass="sansLabel"
-				converter="javax.faces.Integer">
-				<f:setPropertyActionListener
-					target="#{inscrireBean.utilisateur.idRole}" value="2" />
-				<f:ajax execute="@form" render="@form" />
-			</h:commandButton>
-			<br />
-		</fieldset>
-	</h:form>
+				<h:inputText id="prenom" a:placeholder="First name" value="#{inscrireBean.utilisateur.prenom}"
+					size="20" maxlength="20">
+					<f:ajax event="blur" render="preMessage" />
+				</h:inputText>
+				<h:message id="preMessage" for="prenom" errorClass="erreur" />
+				<br />
+
+				<h:messages globalOnly="true" infoClass="info" />
+
+				<h:commandButton value="Inscription"
+					action="#{inscrireBean.inscrire}" styleClass="sansLabel"
+					converter="javax.faces.Integer">
+					<f:setPropertyActionListener
+						target="#{inscrireBean.utilisateur.idRole}" value="2" />
+					<f:ajax execute="@form" render="@form" />
+				</h:commandButton>
+				<br />
+			</h:form>
+		</h:panelGroup>
+	</h:panelGroup>
 </h:body>
 </html>

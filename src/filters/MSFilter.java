@@ -31,7 +31,7 @@ public class MSFilter implements Filter {
 		}
 		ConnexionBean connexionBean = (ConnexionBean) request.getSession().getAttribute("connexionBean");
 		if (connexionBean != null){
-			if(connexionBean.isLoggedIn()) // IDMS
+			if(connexionBean.getUtilisateur().getIdRole()==3)
 				chain.doFilter(request, response);
 			else
 				response.sendRedirect( request.getContextPath() + "/connexion.xhtml" );

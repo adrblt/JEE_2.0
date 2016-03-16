@@ -31,7 +31,7 @@ public class InvestFilter implements Filter {
 		}
 		ConnexionBean connexionBean = (ConnexionBean) request.getSession().getAttribute("connexionBean");
 		if (connexionBean != null){
-			if(connexionBean.isLoggedIn()) // IDINVEST
+			if(connexionBean.getUtilisateur().getIdRole()==2)
 				chain.doFilter(request, response);
 			else
 				response.sendRedirect( request.getContextPath() + "/connexion.xhtml" );

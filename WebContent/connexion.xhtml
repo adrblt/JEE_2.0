@@ -1,32 +1,81 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 <h:head>
-	<meta charset="utf-8" />
-	<title>Connexion</title>
-	<h:outputStylesheet library="default" name="css/form.css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>OceanTech</title>
+	<h:outputStylesheet library="default" name="css/main.css" />
+	<h:outputStylesheet library="default" name="css/style.css" />
+
+	<link type="text/css" rel="stylesheet"
+		href="resources/default/jQuery/demo/css/demo.css" />
+	<link type="text/css" rel="stylesheet"
+		href="resources/default/jQuery/dist/css/jquery.mmenu.all.css" />
+
+	<script type="text/javascript"
+		src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script type="text/javascript"
+		src="resources/default/jQuery/dist/js/jquery.mmenu.min.all.js"></script>
+	<script type="text/javascript">
+			$(function() {
+				$('nav#menu').mmenu({
+					extensions	: [ 'effect-slide', 'pageshadow' ],
+					header		: true,
+					searchfield	: true,
+					counters	: true,
+					footer		: {
+						add			: true,
+						content		: '<a href="mmenu.frebsite.nl"></a>'
+					}
+				});
+			});
+		</script>
 </h:head>
 <h:body>
-	<h:form id="formulaire">
-		<fieldset>
-			<legend>Connexion</legend>
-			
-			<h:outputLabel for="email"> Adresse email </h:outputLabel>
-			<h:inputText id="email" value="#{connexionBean.utilisateur.email}" size="20" maxlength="60"/>
-			<br />
+	<div id="page">
+		<div class="header">
+			<a href="#menu"></a> OceanTech
+		</div>
 
-			<h:outputLabel for="motdepasse"> Mot de passe </h:outputLabel>
-			<h:inputSecret id="motdepasse" value="#{connexionBean.utilisateur.mdp}" size="20" maxlength="20"/>
-			<br />
+		<nav id="menu">
+			<ul>
+				<li><a href="home.html"><span>HOME</span></a></li>
+				<li><a href="aboutus.html"><span>ABOUT US</span></a></li>
+				<li><a href="contactus.php">CONTACT US</a></li>
+			</ul>
+		</nav>
+	</div>
 
-			<h:messages globalOnly="true" infoClass="info" />
-
-			<h:commandButton value="Connexion" action="#{connexionBean.connecter}" styleClass="sansLabel">
-				<f:ajax execute="@form" render="@form" />
-			</h:commandButton>
+	<h:panelGroup layout="block" styleClass="container">
+		<h:panelGroup layout="block" styleClass="login">
 			<br />
-		</fieldset>
-	</h:form>
+			<br />
+			<h:panelGroup layout="block" styleClass="login-triangle" />
+
+			<h2 class="login-header">Login to your account</h2>
+			<h:form id="formulaire" styleClass="login-container">
+				<h:inputText id="email" a:placeholder="Email"
+					value="#{connexionBean.utilisateur.email}" size="20" maxlength="60" />
+				<br />
+
+				<h:inputSecret id="motdepasse" a:placeholder="Password"
+					value="#{connexionBean.utilisateur.mdp}" size="20" maxlength="20" />
+				<br />
+
+				<h:messages globalOnly="true" infoClass="info" />
+
+				<h:commandButton value="Log in" action="#{connexionBean.connecter}"
+					styleClass="sansLabel">
+					<f:ajax execute="@form" render="@form" />
+				</h:commandButton>
+
+				<h:outputLabel>
+				Don't have an account ? <a href="inscription.xhtml">Sign up!</a>
+				</h:outputLabel>
+			</h:form>
+		</h:panelGroup>
+	</h:panelGroup>
 </h:body>
 </html>

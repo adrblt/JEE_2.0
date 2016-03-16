@@ -1,34 +1,76 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 <h:head>
-	<meta charset="utf-8" />
-	<title>Accueil Membre Société</title>
-	<h:outputStylesheet library="default" name="css/form.css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>OceanTech</title>
+	<h:outputStylesheet library="default" name="css/main.css" />
+	<h:outputStylesheet library="default" name="css/style.css" />
+
+	<link type="text/css" rel="stylesheet"
+		href="../resources/default/jQuery/demo/css/demo.css" />
+	<link type="text/css" rel="stylesheet"
+		href="../resources/default/jQuery/dist/css/jquery.mmenu.all.css" />
+
+	<script type="text/javascript"
+		src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script type="text/javascript"
+		src="../resources/default/jQuery/dist/js/jquery.mmenu.min.all.js"></script>
+	<script type="text/javascript">
+			$(function() {
+				$('nav#menu').mmenu({
+					extensions	: [ 'effect-slide', 'pageshadow' ],
+					header		: true,
+					searchfield	: true,
+					counters	: true,
+					footer		: {
+						add			: true,
+						content		: '<a href="mmenu.frebsite.nl"></a>'
+					}
+				});
+			});
+		</script>
 </h:head>
 <h:body>
-	<h:form id="formulaire">
-		<fieldset>
-			<legend>AJOUTER INFO</legend>
 
-			<h:inputTextarea id="infoS" value="#{infoBean.info.VInfo}"
-				style="width: 300px;height: 100px;resize: none;">
-				<f:ajax event="blur" render="infoSMessage" />
-			</h:inputTextarea>
-			<h:message id="infoSMessage" for="infoS" errorClass="erreur" />
-			<br />
+	<div id="page">
+		<div class="header">
+			<a href="#menu"></a> OceanTech
+		</div>
 
-			<h:messages globalOnly="true" infoClass="info" />
+		<nav id="menu">
+			<ul>
+				<li><a href="../home.html"><span>HOME</span></a></li>
+				<li><a href="aboutus.html"><span>ABOUT US</span></a></li>
+				<li><a href="contactus.php">CONTACT US</a></li>
+			</ul>
+		</nav>
+	</div>
 
-			<h:commandButton value="Publier" action="#{infoBean.publier}"
-				styleClass="sansLabel">
-				<f:setPropertyActionListener target="#{infoBean.utilisateur}"
-					value="#{connexionBean.utilisateur}" />
-				<f:ajax execute="@form" render="@form" />
-			</h:commandButton>
-			<br />
-		</fieldset>
-	</h:form>
+	<h:panelGroup layout="block" styleClass="container">
+		<h:panelGroup layout="block" styleClass="login">
+			<h:panelGroup layout="block" styleClass="login-triangle" />
+			<h2 class="login-header">NOUVEL INFO</h2>
+			<h:form id="formulaire" styleClass="login-container">
+				<h:inputTextarea id="infoS" value="#{infoBean.info.VInfo}"
+					style="width: 300px;height: 100px;resize: none;">
+					<f:ajax event="blur" render="infoSMessage" />
+				</h:inputTextarea>
+				<h:message id="infoSMessage" for="infoS" errorClass="erreur" />
+				<br />
+
+				<h:messages globalOnly="true" infoClass="info" />
+
+				<h:commandButton value="Publier" action="#{infoBean.publier}"
+					styleClass="sansLabel">
+					<f:setPropertyActionListener target="#{infoBean.utilisateur}"
+						value="#{connexionBean.utilisateur}" />
+					<f:ajax execute="@form" render="@form" />
+				</h:commandButton>
+			</h:form>
+		</h:panelGroup>
+	</h:panelGroup>
 </h:body>
 </html>

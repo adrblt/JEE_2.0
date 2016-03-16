@@ -2,121 +2,140 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 <h:head>
-	<meta charset="utf-8" />
-	<title>Accueil Admin</title>
-	<h:outputStylesheet library="default" name="css/form.css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>OceanTech</title>
+	<h:outputStylesheet library="default" name="css/main.css" />
+	<h:outputStylesheet library="default" name="css/style.css" />
+
+	<link type="text/css" rel="stylesheet"
+		href="../resources/default/jQuery/demo/css/demo.css" />
+	<link type="text/css" rel="stylesheet"
+		href="../resources/default/jQuery/dist/css/jquery.mmenu.all.css" />
+
+	<script type="text/javascript"
+		src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script type="text/javascript"
+		src="../resources/default/jQuery/dist/js/jquery.mmenu.min.all.js"></script>
+	<script type="text/javascript">
+			$(function() {
+				$('nav#menu').mmenu({
+					extensions	: [ 'effect-slide', 'pageshadow' ],
+					header		: true,
+					searchfield	: true,
+					counters	: true,
+					footer		: {
+						add			: true,
+						content		: '<a href="mmenu.frebsite.nl"></a>'
+					}
+				});
+			});
+		</script>
 </h:head>
 <h:body>
 
-	<!-- PARTIE VALIDATION INVESTISSEUR -->
-	<h:form id="formInvestisseur">
-		<fieldset>
-			<legend>VALIDER PROFIL INVESTISSEUR</legend>
+	<div id="page">
+		<div class="header">
+			<a href="#menu"></a> OceanTech
+		</div>
 
-			<h:selectManyCheckbox value="#{validateInvestBean.vinvestisseurs}"
-				converter="javax.faces.Integer">
-				<f:selectItems value="#{validateInvestBean.ninvestisseurs}"
-					var="ninvestisseur" itemValue="#{ninvestisseur.idUtilisateur}"
-					itemLabel="#{ninvestisseur.prenom}  #{ninvestisseur.nom} #{ninvestisseur.email}" />
-			</h:selectManyCheckbox>
+		<nav id="menu">
+			<ul>
+				<li><a href="../home.html"><span>HOME</span></a></li>
+				<li><a href="aboutus.html"><span>ABOUT US</span></a></li>
+				<li><a href="contactus.php">CONTACT US</a></li>
+			</ul>
+		</nav>
+	</div>
 
-			<h:messages globalOnly="true" infoClass="info" />
-
-			<h:commandButton value="Valider"
-				action="#{validateInvestBean.validate}" styleClass="sansLabel">
-				<f:ajax execute="@form" render="@form" />
-			</h:commandButton>
+	<h:panelGroup layout="block" styleClass="container">
+		<h:panelGroup layout="block" styleClass="login">
 			<br />
-		</fieldset>
-	</h:form>
-
-
-
-
-	<!-- PARTIE ACCREDITATION -->
-	<h:form id="formMS">
-		<fieldset>
-			<legend>INSCRIPTION MEMBRE SOCIETE</legend>
-
-			<h:outputLabel for="email"> Adresse email <span
-					class="requis">*</span>
-			</h:outputLabel>
-			<h:inputText id="email" value="#{inscrireBean.utilisateur.email}"
-				size="20" maxlength="60">
-				<f:ajax event="blur" render="emailMessage" />
-				<f:validator binding="#{existenceEmailValidator}" />
-			</h:inputText>
-			<h:message id="emailMessage" for="email" errorClass="erreur" />
 			<br />
 
-			<h:outputLabel for="motdepasse"> Mot de passe <span
-					class="requis">*</span>
-			</h:outputLabel>
-			<h:inputSecret id="motdepasse"
-				value="#{inscrireBean.utilisateur.mdp}"
-				binding="#{composantMotDePasse}" size="20" maxlength="20">
-				<f:ajax event="blur" execute="motdepasse confirmation"
-					render="motDePasseMessage confirmationMessage" />
-			</h:inputSecret>
-			<h:message id="motDePasseMessage" for="motdepasse"
-				errorClass="erreur" />
-			<br />
+			<!-- PARTIE VALIDATION INVESTISSEUR -->
+			<h:panelGroup layout="block" styleClass="login-triangle" />
+			<h2 class="login-header">VALIDATE INVESTISOR PROFIL</h2>
+			<h:form id="formInvestisseur" styleClass="login-container">
+				<h:selectManyCheckbox value="#{validateInvestBean.vinvestisseurs}"
+					converter="javax.faces.Integer">
+					<f:selectItems value="#{validateInvestBean.ninvestisseurs}"
+						var="ninvestisseur" itemValue="#{ninvestisseur.idUtilisateur}"
+						itemLabel="#{ninvestisseur.prenom}  #{ninvestisseur.nom} #{ninvestisseur.email}" />
+				</h:selectManyCheckbox>
 
-			<h:outputLabel for="confirmation"> Confirmation du mot de passe <span
-					class="requis">*</span>
-			</h:outputLabel>
-			<h:inputSecret id="confirmation"
-				value="#{inscrireBean.utilisateur.mdp}" size="20" maxlength="20">
-				<f:validator validatorId="confirmationMDPValidator" />
-				<f:attribute name="composantMotDePasse"
-					value="#{composantMotDePasse}" />
-				<f:ajax event="blur" execute="motdepasse confirmation"
-					render="motDePasseMessage confirmationMessage" />
-			</h:inputSecret>
-			<h:message id="confirmationMessage" for="confirmation"
-				errorClass="erreur" />
-			<br />
+				<h:messages globalOnly="true" infoClass="info" />
 
-			<h:outputLabel for="nom"> Nom <span class="requis">*</span>
-			</h:outputLabel>
-			<h:inputText id="nom" value="#{inscrireBean.utilisateur.nom}"
-				size="20" maxlength="20">
-				<f:ajax event="blur" render="nomMessage" />
-			</h:inputText>
-			<h:message id="nomMessage" for="nom" errorClass="erreur" />
-			<br />
+				<h:commandButton value="Validate"
+					action="#{validateInvestBean.validate}" styleClass="sansLabel">
+					<f:ajax execute="@form" render="@form" />
+				</h:commandButton>
+			</h:form>
 
-			<h:outputLabel for="prenom"> Prenom <span
-					class="requis">*</span>
-			</h:outputLabel>
-			<h:inputText id="prenom" value="#{inscrireBean.utilisateur.prenom}"
-				size="20" maxlength="20">
-				<f:ajax event="blur" render="preMessage" />
-			</h:inputText>
-			<h:message id="preMessage" for="prenom" errorClass="erreur" />
-			<br />
+			<br /><br /><br />
+			<!-- PARTIE ACCREDITATION -->
+			<h:panelGroup layout="block" styleClass="login-triangle" />
+			<h2 class="login-header">VALIDATE INVESTISOR PROFIL</h2>
+			<h:form id="formMS" styleClass="login-container">
+				<h:inputText id="email" a:placeholder="Email" value="#{inscrireBean.utilisateur.email}"
+					size="20" maxlength="60">
+					<f:ajax event="blur" render="emailMessage" />
+					<f:validator binding="#{existenceEmailValidator}" />
+				</h:inputText>
+				<h:message id="emailMessage" for="email" errorClass="erreur" />
+				<br />
 
-			<h:selectOneMenu value="#{inscrireBean.idSociete}"
-				converter="javax.faces.Integer">
-				<f:selectItems value="#{societeBean.societes}" var="societe"
-					itemValue="#{societe.idSociete}" itemLabel="#{societe.nom}" />
-				<f:selectItem itemValue="-1" itemLabel="Autre" />
-				<f:ajax render="panelGroup" />
-			</h:selectOneMenu>
-			<br />
+				<h:inputSecret id="motdepasse" a:placeholder="Password"
+					value="#{inscrireBean.utilisateur.mdp}"
+					binding="#{composantMotDePasse}" size="20" maxlength="20">
+					<f:ajax event="blur" execute="motdepasse confirmation"
+						render="motDePasseMessage confirmationMessage" />
+				</h:inputSecret>
+				<h:message id="motDePasseMessage" for="motdepasse"
+					errorClass="erreur" />
+				<br />
 
-			<h:panelGroup id="panelGroup">
-				<h:form id="formulaire2" rendered="#{inscrireBean.idSociete==-1}">
-					<f:ajax event="click" />
-					<fieldset>
-						<legend>Création société</legend>
+				<h:inputSecret id="confirmation" a:placeholder="Password confirmation"
+					value="#{inscrireBean.utilisateur.mdp}" size="20" maxlength="20">
+					<f:validator validatorId="confirmationMDPValidator" />
+					<f:attribute name="composantMotDePasse"
+						value="#{composantMotDePasse}" />
+					<f:ajax event="blur" execute="motdepasse confirmation"
+						render="motDePasseMessage confirmationMessage" />
+				</h:inputSecret>
+				<h:message id="confirmationMessage" for="confirmation"
+					errorClass="erreur" />
+				<br />
 
-						<h:outputLabel for="nomS"> Nom <span
-								class="requis">*</span>
-						</h:outputLabel>
-						<h:inputText id="nomS" value="#{inscrireBean.societe.nom}"
+				<h:inputText id="nom" a:placeholder="Last name" value="#{inscrireBean.utilisateur.nom}"
+					size="20" maxlength="20">
+					<f:ajax event="blur" render="nomMessage" />
+				</h:inputText>
+				<h:message id="nomMessage" for="nom" errorClass="erreur" />
+				<br />
+
+				<h:inputText id="prenom" a:placeholder="First name" value="#{inscrireBean.utilisateur.prenom}"
+					size="20" maxlength="20">
+					<f:ajax event="blur" render="preMessage" />
+				</h:inputText>
+				<h:message id="preMessage" for="prenom" errorClass="erreur" />
+				<br />
+
+				<h:selectOneMenu value="#{inscrireBean.idSociete}"
+					converter="javax.faces.Integer">
+					<f:selectItems value="#{societeBean.societes}" var="societe"
+						itemValue="#{societe.idSociete}" itemLabel="#{societe.nom}" />
+					<f:selectItem itemValue="-1" itemLabel="Autre" />
+					<f:ajax render="panelGroup" />
+				</h:selectOneMenu>
+				<br />
+
+				<h:panelGroup id="panelGroup">
+					<h:form id="formulaire2" rendered="#{inscrireBean.idSociete==-1}">
+						<f:ajax event="click" />
+						<h:inputText id="nomS" a:placeholder="Firm name" value="#{inscrireBean.societe.nom}"
 							size="20" maxlength="60">
 							<f:ajax event="blur" render="nomSMessage" />
 							<f:validator binding="#{existenceNomValidator}" />
@@ -124,10 +143,7 @@
 						<h:message id="nomSMessage" for="nomS" errorClass="erreur" />
 						<br />
 
-						<h:outputLabel for="description"> Description <span
-								class="requis">*</span>
-						</h:outputLabel>
-						<h:inputTextarea id="description"
+						<h:inputTextarea id="description" a:placeholder="Description"
 							value="#{inscrireBean.societe.description}"
 							style="max-width: 300px;max-height: 100px;">
 							<f:ajax event="blur" render="descriptionMessage" />
@@ -141,372 +157,375 @@
 							<f:selectItems value="#{secteurBean.societes}" var="secteur"
 								itemValue="#{secteur.idSecteur}" itemLabel="#{secteur.VSecteur}" />
 						</h:selectOneMenu>
+					</h:form>
+				</h:panelGroup>
+				<br />
 
-					</fieldset>
-				</h:form>
-			</h:panelGroup>
-			<br />
+				<h:messages globalOnly="true" infoClass="info" />
 
-			<h:messages globalOnly="true" infoClass="info" />
-
-			<h:commandButton value="Inscription"
-				action="#{inscrireBean.inscrire}" styleClass="sansLabel"
-				converter="javax.faces.Integer">
-				<f:setPropertyActionListener
-					target="#{inscrireBean.utilisateur.idRole}" value="3" />
-				<f:ajax execute="@form" render="@form" />
-			</h:commandButton>
-			<br />
-		</fieldset>
-	</h:form>
+				<h:commandButton value="Enroll"
+					action="#{inscrireBean.inscrire}" styleClass="sansLabel"
+					converter="javax.faces.Integer">
+					<f:setPropertyActionListener
+						target="#{inscrireBean.utilisateur.idRole}" value="3" />
+					<f:ajax execute="@form" render="@form" />
+				</h:commandButton>
+				<br />
+			</h:form>
 
 
-	<!-- PARTIE RECHERCHES -->
-	<h:form id="formRecherche">
-		<fieldset>
-			<legend>RECHERCHES</legend>
+			<!-- PARTIE RECHERCHES -->
+			<h:panelGroup layout="block" styleClass="login-triangle" />
+			<h2 class="login-header">VALIDATE INVESTISOR PROFIL</h2>
+			<h:form id="formRecherche" styleClass="login-container">
+				<h:selectOneRadio converter="javax.faces.Integer"
+					value="#{rechercheAdminBean.choix}">
+					<f:selectItem itemValue="1" itemLabel="Entreprise" />
+					<f:selectItem itemValue="2" itemLabel="Utilisateur" />
+					<f:selectItem itemValue="3" itemLabel="Contrat" />
+					<f:ajax render="panelRechercheE"
+						listener="#{rechercheAdminBean.rechercher()}" />
+				</h:selectOneRadio>
 
-			<h:selectOneRadio converter="javax.faces.Integer"
-				value="#{rechercheAdminBean.choix}">
-				<f:selectItem itemValue="1" itemLabel="Entreprise" />
-				<f:selectItem itemValue="2" itemLabel="Utilisateur" />
-				<f:selectItem itemValue="3" itemLabel="Contrat" />
-				<f:ajax render="panelRechercheE"
-					listener="#{rechercheAdminBean.rechercher()}" />
-			</h:selectOneRadio>
-
-			<h:panelGroup id="panelRechercheE">
-				<h:panelGroup id="formRE" rendered="#{rechercheAdminBean.choix==1}">
-					<f:ajax event="click" />
-					<h:selectOneMenu value="#{rechercheAdminBean.secteur}">
-						<f:selectItem itemValue=" " itemLabel=" " />
-						<f:selectItems value="#{secteurBean.societes}" var="secteur"
-							itemValue="#{secteur.VSecteur}" itemLabel="#{secteur.VSecteur}" />
-						<f:ajax listener="#{rechercheAdminBean.rechercher()}" render="res1" />
+				<h:panelGroup id="panelRechercheE">
+					<h:panelGroup id="formRE" rendered="#{rechercheAdminBean.choix==1}">
 						<f:ajax event="click" />
-					</h:selectOneMenu>
+						<h:selectOneMenu value="#{rechercheAdminBean.secteur}">
+							<f:selectItem itemValue=" " itemLabel=" " />
+							<f:selectItems value="#{secteurBean.societes}" var="secteur"
+								itemValue="#{secteur.VSecteur}" itemLabel="#{secteur.VSecteur}" />
+							<f:ajax listener="#{rechercheAdminBean.rechercher()}"
+								render="res1" />
+							<f:ajax event="click" />
+						</h:selectOneMenu>
 
-					<h:inputText value="#{rechercheAdminBean.nbContratsMin}"
-						converter="javax.faces.Integer">
-						<f:ajax event="blur" render="res1"
-							listener="#{rechercheAdminBean.rechercher()}" />
-					</h:inputText>
+						<h:inputText value="#{rechercheAdminBean.nbContratsMin}"
+							converter="javax.faces.Integer">
+							<f:ajax event="blur" render="res1"
+								listener="#{rechercheAdminBean.rechercher()}" />
+						</h:inputText>
 
-					<h:panelGroup id="res1">
-						<h:dataTable value="#{rechercheAdminBean.resultatS}" var="row"
-							rendered="#{rechercheAdminBean.choix==1}">
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Nom" />
-								</f:facet>
-								<h:outputText value="#{row[3]}" />
-							</h:column>
+						<h:panelGroup id="res1">
+							<h:dataTable value="#{rechercheAdminBean.resultatS}" var="row"
+								rendered="#{rechercheAdminBean.choix==1}">
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Nom" />
+									</f:facet>
+									<h:outputText value="#{row[3]}" />
+								</h:column>
 
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Secteur" />
-								</f:facet>
-								<h:outputText value="#{row[0]}" />
-							</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Secteur" />
+									</f:facet>
+									<h:outputText value="#{row[0]}" />
+								</h:column>
 
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Contrats" />
-								</f:facet>
-								<h:outputText value="#{row[1]}" />
-							</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Contrats" />
+									</f:facet>
+									<h:outputText value="#{row[1]}" />
+								</h:column>
 
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Description" />
-								</f:facet>
-								<h:outputText value="#{row[2]}" />
-							</h:column>
-						</h:dataTable>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Description" />
+									</f:facet>
+									<h:outputText value="#{row[2]}" />
+								</h:column>
+							</h:dataTable>
+						</h:panelGroup>
+					</h:panelGroup>
+
+					<h:panelGroup id="formRC" rendered="#{rechercheAdminBean.choix==3}">
+						<f:ajax event="click" />
+						<h:selectOneMenu value="#{rechercheAdminBean.secteur}">
+							<f:selectItem itemValue=" " itemLabel=" " />
+							<f:selectItems value="#{secteurBean.societes}" var="secteur"
+								itemValue="#{secteur.VSecteur}" itemLabel="#{secteur.VSecteur}" />
+							<f:ajax listener="#{rechercheAdminBean.rechercher()}"
+								render="res2" />
+							<f:ajax event="click" />
+						</h:selectOneMenu>
+
+						<h:selectOneMenu value="#{rechercheAdminBean.firm}">
+							<f:selectItem itemValue=" " itemLabel=" " />
+							<f:selectItems value="#{societeBean.societes}" var="societe"
+								itemValue="#{societe.nom}" itemLabel="#{societe.nom}" />
+							<f:ajax listener="#{rechercheAdminBean.rechercher()}"
+								render="res2" />
+							<f:ajax event="click" />
+						</h:selectOneMenu>
+
+						<h:selectOneMenu value="#{rechercheAdminBean.nomU}">
+							<f:selectItem itemValue=" " itemLabel=" " />
+							<f:selectItems value="#{utilisateurBean.utilisateurs}"
+								var="utilisateur" itemValue="#{utilisateur.nom}"
+								itemLabel="#{utilisateur.nom}" />
+							<f:ajax listener="#{rechercheAdminBean.rechercher()}"
+								render="res2" />
+							<f:ajax event="click" />
+						</h:selectOneMenu>
+
+						<h:selectOneMenu value="#{rechercheAdminBean.prenomU}">
+							<f:selectItem itemValue=" " itemLabel=" " />
+							<f:selectItems value="#{utilisateurBean.utilisateurs}"
+								var="utilisateur" itemValue="#{utilisateur.prenom}"
+								itemLabel="#{utilisateur.prenom}" />
+							<f:ajax listener="#{rechercheAdminBean.rechercher()}"
+								render="res2" />
+							<f:ajax event="click" />
+						</h:selectOneMenu>
+
+						<h:panelGroup id="res2">
+							<br />
+							<span>POSSESSIONS</span>
+							<br />
+							<h:dataTable value="#{rechercheAdminBean.resultatP}" var="row">
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Societe" />
+									</f:facet>
+									<h:outputText value="#{row[5]}" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Secteur" />
+									</f:facet>
+									<h:outputText value="#{row[0]}" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Date d'achat" />
+									</f:facet>
+									<h:outputText value="#{row[2]}" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Prix d'achat" />
+									</f:facet>
+									<h:outputText value="#{row[1]}" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Utilisateur" />
+									</f:facet>
+									<h:outputText value="#{row[4]} #{row[3]}" />
+								</h:column>
+							</h:dataTable>
+
+							<br />
+							<span>VENTES</span>
+							<br />
+							<h:dataTable value="#{rechercheAdminBean.resultatV}" var="row">
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Societe" />
+									</f:facet>
+									<h:outputText value="#{row[5]}" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Secteur" />
+									</f:facet>
+									<h:outputText value="#{row[0]}" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Date de début de vente" />
+									</f:facet>
+									<h:outputText value="#{row[3]}" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Prix de vente" />
+									</f:facet>
+									<h:outputText value="#{row[2]}" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Utilisateur" />
+									</f:facet>
+									<h:outputText value="#{row[4]} #{row[1]}" />
+								</h:column>
+							</h:dataTable>
+
+							<br />
+							<span>LOGS</span>
+							<br />
+							<h:dataTable value="#{rechercheAdminBean.resultatL}" var="row">
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Societe" />
+									</f:facet>
+									<h:outputText value="#{row[6]}" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Secteur" />
+									</f:facet>
+									<h:outputText value="#{row[0]}" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Date" />
+									</f:facet>
+									<h:outputText value="#{row[1]}" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Prix" />
+									</f:facet>
+									<h:outputText value="#{row[2]}" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Achat(1) Vente(0)" />
+									</f:facet>
+									<h:outputText value="#{row[3]}" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Utilisateur" />
+									</f:facet>
+									<h:outputText value="#{row[5]} #{row[4]}" />
+								</h:column>
+							</h:dataTable>
+						</h:panelGroup>
+					</h:panelGroup>
+
+					<h:panelGroup id="formRU" rendered="#{rechercheAdminBean.choix==2}">
+						<f:ajax event="click" />
+						<h:selectOneMenu value="#{rechercheAdminBean.firm}">
+							<f:selectItem itemValue=" " itemLabel=" " />
+							<f:selectItems value="#{societeBean.societes}" var="societe"
+								itemValue="#{societe.nom}" itemLabel="#{societe.nom}" />
+							<f:ajax listener="#{rechercheAdminBean.rechercher()}"
+								render="res3" />
+							<f:ajax event="click" />
+						</h:selectOneMenu>
+
+						<h:selectOneMenu value="#{rechercheAdminBean.nomU}">
+							<f:selectItem itemValue=" " itemLabel=" " />
+							<f:selectItems value="#{utilisateurBean.utilisateurs}"
+								var="utilisateur" itemValue="#{utilisateur.nom}"
+								itemLabel="#{utilisateur.nom}" />
+							<f:ajax listener="#{rechercheAdminBean.rechercher()}"
+								render="res3" />
+							<f:ajax event="click" />
+						</h:selectOneMenu>
+
+						<h:selectOneMenu value="#{rechercheAdminBean.prenomU}">
+							<f:selectItem itemValue=" " itemLabel=" " />
+							<f:selectItems value="#{utilisateurBean.utilisateurs}"
+								var="utilisateur" itemValue="#{utilisateur.prenom}"
+								itemLabel="#{utilisateur.prenom}" />
+							<f:ajax listener="#{rechercheAdminBean.rechercher()}"
+								render="res3" />
+							<f:ajax event="click" />
+						</h:selectOneMenu>
+
+						<h:panelGroup id="res3">
+							<br />
+							<span>INVESTISSEURS</span>
+							<br />
+							<h:dataTable value="#{rechercheAdminBean.resultatI}" var="row">
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Nom" />
+									</f:facet>
+									<h:outputText value="#{row[2]}" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Prenom" />
+									</f:facet>
+									<h:outputText value="#{row[3]}" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Email" />
+									</f:facet>
+									<h:outputText value="#{row[4]}" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Date d'inscription" />
+									</f:facet>
+									<h:outputText value="#{row[0]}" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Compte" />
+									</f:facet>
+									<h:outputText value="#{row[1]}" />
+								</h:column>
+							</h:dataTable>
+
+							<br />
+							<span>MEMBRES SOCIETES</span>
+							<br />
+							<h:dataTable value="#{rechercheAdminBean.resultatMS}" var="row">
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Nom" />
+									</f:facet>
+									<h:outputText value="#{row[1]}" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Prenom" />
+									</f:facet>
+									<h:outputText value="#{row[2]}" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Email" />
+									</f:facet>
+									<h:outputText value="#{row[3]}" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Date d'inscription" />
+									</f:facet>
+									<h:outputText value="#{row[0]}" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Société" />
+									</f:facet>
+									<h:outputText value="#{row[4]}" />
+								</h:column>
+							</h:dataTable>
+						</h:panelGroup>
 					</h:panelGroup>
 				</h:panelGroup>
-
-				<h:panelGroup id="formRC" rendered="#{rechercheAdminBean.choix==3}">
-					<f:ajax event="click" />
-					<h:selectOneMenu value="#{rechercheAdminBean.secteur}">
-						<f:selectItem itemValue=" " itemLabel=" " />
-						<f:selectItems value="#{secteurBean.societes}" var="secteur"
-							itemValue="#{secteur.VSecteur}" itemLabel="#{secteur.VSecteur}" />
-						<f:ajax listener="#{rechercheAdminBean.rechercher()}" render="res2" />
-						<f:ajax event="click" />
-					</h:selectOneMenu>
-
-					<h:selectOneMenu value="#{rechercheAdminBean.firm}">
-						<f:selectItem itemValue=" " itemLabel=" " />
-						<f:selectItems value="#{societeBean.societes}" var="societe"
-							itemValue="#{societe.nom}" itemLabel="#{societe.nom}" />
-						<f:ajax listener="#{rechercheAdminBean.rechercher()}" render="res2" />
-						<f:ajax event="click" />
-					</h:selectOneMenu>
-
-					<h:selectOneMenu value="#{rechercheAdminBean.nomU}">
-						<f:selectItem itemValue=" " itemLabel=" " />
-						<f:selectItems value="#{utilisateurBean.utilisateurs}"
-							var="utilisateur" itemValue="#{utilisateur.nom}"
-							itemLabel="#{utilisateur.nom}" />
-						<f:ajax listener="#{rechercheAdminBean.rechercher()}" render="res2" />
-						<f:ajax event="click" />
-					</h:selectOneMenu>
-
-					<h:selectOneMenu value="#{rechercheAdminBean.prenomU}">
-						<f:selectItem itemValue=" " itemLabel=" " />
-						<f:selectItems value="#{utilisateurBean.utilisateurs}"
-							var="utilisateur" itemValue="#{utilisateur.prenom}"
-							itemLabel="#{utilisateur.prenom}" />
-						<f:ajax listener="#{rechercheAdminBean.rechercher()}" render="res2" />
-						<f:ajax event="click" />
-					</h:selectOneMenu>
-
-					<h:panelGroup id="res2">
-						<br />
-						<span>POSSESSIONS</span>
-						<br />
-						<h:dataTable value="#{rechercheAdminBean.resultatP}" var="row">
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Societe" />
-								</f:facet>
-								<h:outputText value="#{row[5]}" />
-							</h:column>
-
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Secteur" />
-								</f:facet>
-								<h:outputText value="#{row[0]}" />
-							</h:column>
-
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Date d'achat" />
-								</f:facet>
-								<h:outputText value="#{row[2]}" />
-							</h:column>
-
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Prix d'achat" />
-								</f:facet>
-								<h:outputText value="#{row[1]}" />
-							</h:column>
-
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Utilisateur" />
-								</f:facet>
-								<h:outputText value="#{row[4]} #{row[3]}" />
-							</h:column>
-						</h:dataTable>
-
-						<br />
-						<span>VENTES</span>
-						<br />
-						<h:dataTable value="#{rechercheAdminBean.resultatV}" var="row">
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Societe" />
-								</f:facet>
-								<h:outputText value="#{row[5]}" />
-							</h:column>
-
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Secteur" />
-								</f:facet>
-								<h:outputText value="#{row[0]}" />
-							</h:column>
-
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Date de début de vente" />
-								</f:facet>
-								<h:outputText value="#{row[3]}" />
-							</h:column>
-
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Prix de vente" />
-								</f:facet>
-								<h:outputText value="#{row[2]}" />
-							</h:column>
-
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Utilisateur" />
-								</f:facet>
-								<h:outputText value="#{row[4]} #{row[1]}" />
-							</h:column>
-						</h:dataTable>
-
-						<br />
-						<span>LOGS</span>
-						<br />
-						<h:dataTable value="#{rechercheAdminBean.resultatL}" var="row">
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Societe" />
-								</f:facet>
-								<h:outputText value="#{row[6]}" />
-							</h:column>
-
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Secteur" />
-								</f:facet>
-								<h:outputText value="#{row[0]}" />
-							</h:column>
-
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Date" />
-								</f:facet>
-								<h:outputText value="#{row[1]}" />
-							</h:column>
-
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Prix" />
-								</f:facet>
-								<h:outputText value="#{row[2]}" />
-							</h:column>
-
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Achat(1) Vente(0)" />
-								</f:facet>
-								<h:outputText value="#{row[3]}" />
-							</h:column>
-
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Utilisateur" />
-								</f:facet>
-								<h:outputText value="#{row[5]} #{row[4]}" />
-							</h:column>
-						</h:dataTable>
-					</h:panelGroup>
-				</h:panelGroup>
-
-				<h:panelGroup id="formRU" rendered="#{rechercheAdminBean.choix==2}">
-					<f:ajax event="click" />
-					<h:selectOneMenu value="#{rechercheAdminBean.firm}">
-						<f:selectItem itemValue=" " itemLabel=" " />
-						<f:selectItems value="#{societeBean.societes}" var="societe"
-							itemValue="#{societe.nom}" itemLabel="#{societe.nom}" />
-						<f:ajax listener="#{rechercheAdminBean.rechercher()}" render="res3" />
-						<f:ajax event="click" />
-					</h:selectOneMenu>
-
-					<h:selectOneMenu value="#{rechercheAdminBean.nomU}">
-						<f:selectItem itemValue=" " itemLabel=" " />
-						<f:selectItems value="#{utilisateurBean.utilisateurs}"
-							var="utilisateur" itemValue="#{utilisateur.nom}"
-							itemLabel="#{utilisateur.nom}" />
-						<f:ajax listener="#{rechercheAdminBean.rechercher()}" render="res3" />
-						<f:ajax event="click" />
-					</h:selectOneMenu>
-
-					<h:selectOneMenu value="#{rechercheAdminBean.prenomU}">
-						<f:selectItem itemValue=" " itemLabel=" " />
-						<f:selectItems value="#{utilisateurBean.utilisateurs}"
-							var="utilisateur" itemValue="#{utilisateur.prenom}"
-							itemLabel="#{utilisateur.prenom}" />
-						<f:ajax listener="#{rechercheAdminBean.rechercher()}" render="res3" />
-						<f:ajax event="click" />
-					</h:selectOneMenu>
-
-					<h:panelGroup id="res3">
-						<br />
-						<span>INVESTISSEURS</span>
-						<br />
-						<h:dataTable value="#{rechercheAdminBean.resultatI}" var="row">
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Nom" />
-								</f:facet>
-								<h:outputText value="#{row[2]}" />
-							</h:column>
-
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Prenom" />
-								</f:facet>
-								<h:outputText value="#{row[3]}" />
-							</h:column>
-
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Email" />
-								</f:facet>
-								<h:outputText value="#{row[4]}" />
-							</h:column>
-
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Date d'inscription" />
-								</f:facet>
-								<h:outputText value="#{row[0]}" />
-							</h:column>
-
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Compte" />
-								</f:facet>
-								<h:outputText value="#{row[1]}" />
-							</h:column>
-						</h:dataTable>
-
-						<br />
-						<span>MEMBRES SOCIETES</span>
-						<br />
-						<h:dataTable value="#{rechercheAdminBean.resultatMS}" var="row">
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Nom" />
-								</f:facet>
-								<h:outputText value="#{row[1]}" />
-							</h:column>
-
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Prenom" />
-								</f:facet>
-								<h:outputText value="#{row[2]}" />
-							</h:column>
-
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Email" />
-								</f:facet>
-								<h:outputText value="#{row[3]}" />
-							</h:column>
-
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Date d'inscription" />
-								</f:facet>
-								<h:outputText value="#{row[0]}" />
-							</h:column>
-
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Société" />
-								</f:facet>
-								<h:outputText value="#{row[4]}" />
-							</h:column>
-						</h:dataTable>
-					</h:panelGroup>
-				</h:panelGroup>
-			</h:panelGroup>
-
-		</fieldset>
-	</h:form>
-
+			</h:form>
+		</h:panelGroup>
+	</h:panelGroup>
 
 
 </h:body>

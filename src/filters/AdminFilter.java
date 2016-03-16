@@ -26,13 +26,13 @@ public class AdminFilter implements Filter {
 		HttpServletResponse response = (HttpServletResponse) res;
 
 		String chemin = request.getRequestURI().substring(request.getContextPath().length());
-		if (chemin.startsWith("/resources")) {
+		if (chemin.startsWith("resources")) {
 			chain.doFilter(request, response);
 			return;
 		}
 		ConnexionBean connexionBean = (ConnexionBean) request.getSession().getAttribute("connexionBean");
 		if (connexionBean != null){
-			if(connexionBean.isLoggedIn()) // IDADMIN
+			if(connexionBean.getUtilisateur().getIdRole()==1)
 				chain.doFilter(request, response);
 			else
 				response.sendRedirect( request.getContextPath() + "/connexion.xhtml" );

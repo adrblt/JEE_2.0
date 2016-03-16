@@ -16,7 +16,7 @@ import dao.UtilisateurDao;
 @RequestScoped
 public class ExistenceEmailValidator implements Validator {
 
-	private static final String EMAIL_EXISTE_DEJA = "Cette adresse email est déjà utilisée";
+	private static final String EMAIL_EXISTE_DEJA = "This email is already used";
 
 	@EJB
 	private UtilisateurDao utilisateurDao;

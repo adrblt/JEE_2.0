@@ -1,5 +1,6 @@
 package beans;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,6 +12,7 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -287,7 +289,7 @@ public class AchatVenteBean {
 		offre=0;
 	}
 	
-	public void acheter() throws InterruptedException{
+	public void acheter() throws InterruptedException, IOException{
 		// CREATION LOG
 		Log log = new Log();
 		log.setIdContrat(idContratAI);
@@ -309,14 +311,6 @@ public class AchatVenteBean {
 		possessionDao.creer(possession);
 		//SUPPRESSION VENTES
 		venteDao.delete(idVendeur, idContratAI);
-		
-		recherchePossessions = new ArrayList<Map<String, String>>();
-		rechercheEncheres = new ArrayList<Map<String, String>>();
-		rechercheMesEncheres = new ArrayList<Map<String, String>>();
-		rechercheMesVentes = new ArrayList<Map<String, String>>();
-		rechercheAchatI = new ArrayList<Map<String, String>>();
-		recherchePossessions();
-		rechercheAchat();
 		idContratA=0;
 		offre=0;
 	}

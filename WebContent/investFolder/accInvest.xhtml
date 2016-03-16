@@ -4,7 +4,38 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:rich="http://richfaces.org/rich">
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>OceanTech</title>
+	<h:outputStylesheet library="default" name="css/main.css" />
+	<h:outputStylesheet library="default" name="css/style.css" />
+
+	<link type="text/css" rel="stylesheet"
+		href="../resources/default/jQuery/demo/css/demo.css" />
+	<link type="text/css" rel="stylesheet"
+		href="../resources/default/jQuery/dist/css/jquery.mmenu.all.css" />
+
+	<script type="text/javascript"
+		src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script type="text/javascript"
+		src="../resources/default/jQuery/dist/js/jquery.mmenu.min.all.js"></script>
+	<script type="text/javascript">
+			$(function() {
+				$('nav#menu').mmenu({
+					extensions	: [ 'effect-slide', 'pageshadow' ],
+					header		: true,
+					searchfield	: true,
+					counters	: true,
+					footer		: {
+						add			: true,
+						content		: '<a href="mmenu.frebsite.nl"></a>'
+					}
+				});
+			});
+		</script>
+</h:head>
 <h:head>
 	<meta charset="utf-8" />
 	<title>Accueil Investisseur</title>
@@ -22,561 +53,584 @@
 		<f:viewAction action="#{achatVenteBean.rechercheMesEnchere()}" />
 	</f:metadata>
 
-	<!-- PARTIE INFOS -->
-	<h:form id="formInfos">
-		<fieldset>
-			<legend>INFOS</legend>
-			<f:ajax event="click" />
+	<div id="page">
+		<div class="header">
+			<a href="#menu"></a> OceanTech
+		</div>
 
-			<h:selectOneMenu value="#{achatVenteBean.secteurI}">
-				<f:selectItem itemValue=" " itemLabel=" " />
-				<f:selectItems value="#{secteurBean.societes}" var="secteur"
-					itemValue="#{secteur.VSecteur}" itemLabel="#{secteur.VSecteur}" />
-				<f:ajax listener="#{achatVenteBean.rechercheInfos()}" render="infos" />
+		<nav id="menu">
+			<ul>
+				<li><a href="../home.html"><span>HOME</span></a></li>
+				<li><a href="aboutus.html"><span>ABOUT US</span></a></li>
+				<li><a href="contactus.php">CONTACT US</a></li>
+			</ul>
+		</nav>
+	</div>
+
+	<h:panelGroup layout="block" styleClass="container">
+		<h:panelGroup layout="block" styleClass="login">
+		Valeur actuelle compte : #{achatVenteBean.investisseur.vCompte}
+
+			<!-- PARTIE INFOS -->
+			<h:panelGroup layout="block" styleClass="login-triangle" />
+			<h2 class="login-header">INFOS</h2>
+			<h:form id="formInfos" styleClass="login-container">
 				<f:ajax event="click" />
-			</h:selectOneMenu>
 
-			<h:selectOneMenu value="#{achatVenteBean.firmI}">
-				<f:selectItem itemValue=" " itemLabel=" " />
-				<f:selectItems value="#{societeBean.societes}" var="societe"
-					itemValue="#{societe.nom}" itemLabel="#{societe.nom}" />
-				<f:ajax listener="#{achatVenteBean.rechercheInfos()}" render="infos" />
-				<f:ajax event="click" />
-			</h:selectOneMenu>
+				<h:selectOneMenu value="#{achatVenteBean.secteurI}">
+					<f:selectItem itemValue=" " itemLabel=" " />
+					<f:selectItems value="#{secteurBean.societes}" var="secteur"
+						itemValue="#{secteur.VSecteur}" itemLabel="#{secteur.VSecteur}" />
+					<f:ajax listener="#{achatVenteBean.rechercheInfos()}"
+						render="infos" />
+					<f:ajax event="click" />
+				</h:selectOneMenu>
 
-			<h:panelGroup id="infos">
-				<br />
-				<h:dataTable value="#{achatVenteBean.resultatI}" var="row">
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Societe" />
-						</f:facet>
-						<h:outputText value="#{row[2]}" />
-					</h:column>
+				<h:selectOneMenu value="#{achatVenteBean.firmI}">
+					<f:selectItem itemValue=" " itemLabel=" " />
+					<f:selectItems value="#{societeBean.societes}" var="societe"
+						itemValue="#{societe.nom}" itemLabel="#{societe.nom}" />
+					<f:ajax listener="#{achatVenteBean.rechercheInfos()}"
+						render="infos" />
+					<f:ajax event="click" />
+				</h:selectOneMenu>
 
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Secteur" />
-						</f:facet>
-						<h:outputText value="#{row[0]}" />
-					</h:column>
-
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Date" />
-						</f:facet>
-						<h:outputText value="#{row[1]}" />
-					</h:column>
-
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Info" />
-						</f:facet>
-						<h:outputText value="#{row[3]}" />
-					</h:column>
-
-				</h:dataTable>
-			</h:panelGroup>
-		</fieldset>
-	</h:form>
-
-	<!-- PARTIE VENTES -->
-	<h:form id="formVentes">
-		<fieldset>
-			<legend>VENTES EN COURS</legend>
-			<f:ajax event="click" />
-
-			<h:selectOneMenu value="#{achatVenteBean.secteurA}">
-				<f:selectItem itemValue=" " itemLabel=" " />
-				<f:selectItems value="#{secteurBean.societes}" var="secteur"
-					itemValue="#{secteur.VSecteur}" itemLabel="#{secteur.VSecteur}" />
-				<f:ajax listener="#{achatVenteBean.rechercheAchat()}"
-					render="encheres achatI" />
-				<f:ajax event="click" />
-			</h:selectOneMenu>
-
-			<h:selectOneMenu value="#{achatVenteBean.firmA}">
-				<f:selectItem itemValue=" " itemLabel=" " />
-				<f:selectItems value="#{societeBean.societes}" var="societe"
-					itemValue="#{societe.nom}" itemLabel="#{societe.nom}" />
-				<f:ajax listener="#{achatVenteBean.rechercheAchat()}"
-					render="encheres achatI" />
-				<f:ajax event="click" />
-			</h:selectOneMenu>
-
-			<h:panelGroup id="encheres">
-				<br />
-				<span>ENCHERES</span>
-				<br />
-				<h:dataTable value="#{achatVenteBean.resultatEncheres}" var="row">
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Societe" />
-						</f:facet>
-						<h:outputText value="#{row[5]}" />
-					</h:column>
-
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Secteur" />
-						</f:facet>
-						<h:outputText value="#{row[0]}" />
-					</h:column>
-
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Date mis en vente" />
-						</f:facet>
-						<h:outputText value="#{row[3]}" />
-					</h:column>
-
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Prix de départ" />
-						</f:facet>
-						<h:outputText value="#{row[2]}" />
-					</h:column>
-
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Prix actuel" />
-						</f:facet>
-						<h:outputText value="#{row[4]}" />
-					</h:column>
-
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Date limite" />
-						</f:facet>
-						<h:outputText value="#{row[6]}" />
-					</h:column>
-
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Nombre d'enchères" />
-						</f:facet>
-						<h:outputText value="#{row[1]}" />
-					</h:column>
-
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Encherir" />
-						</f:facet>
-						<h:commandButton value="Encherir" styleClass="sansLabel"
-							converter="javax.faces.Float">
-							<f:setPropertyActionListener
-								target="#{achatVenteBean.idContratA}" value="#{row[7]}" />
-							<f:setPropertyActionListener target="#{achatVenteBean.prixAchat}"
-								value="#{row[4]}" />
-							<f:setPropertyActionListener target="#{achatVenteBean.dateAchat}"
-								value="#{row[6]}" />
-						</h:commandButton>
-					</h:column>
-				</h:dataTable>
-
-				<h:panelGroup rendered="#{achatVenteBean.idContratA!=0}">
-					<h:outputLabel for="offre"> Offre : <span
-							class="requis">*</span>
-					</h:outputLabel>
-					<h:inputText id="offre" value="#{achatVenteBean.offre}"
-						converter="javax.faces.Float">
-						<f:validator validatorId="enchereValidator" />
-						<f:attribute name="dateActuelle"
-							value="#{achatVenteBean.dateAchat}" />
-						<f:attribute name="prixActuel" value="#{achatVenteBean.prixAchat}" />
-						<f:attribute name="compte"
-							value="#{achatVenteBean.investisseur.vCompte}" />
-						<f:ajax event="blur" render="offreMessage" />
-					</h:inputText>
-					<h:message id="offreMessage" for="offre" errorClass="erreur" />
+				<h:panelGroup id="infos">
 					<br />
+					<h:dataTable value="#{achatVenteBean.resultatI}" var="row">
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Societe" />
+							</f:facet>
+							<h:outputText value="#{row[2]}" />
+						</h:column>
 
-					<h:commandButton value="Valider"
-						action="#{achatVenteBean.encherir()}" styleClass="sansLabel" />
-					<h:commandButton value="Annuler" styleClass="sansLabel"
-						converter="javax.faces.Integer" immediate="true">
-						<f:setPropertyActionListener target="#{achatVenteBean.idContratA}"
-							value="0" />
-						<f:setPropertyActionListener target="#{achatVenteBean.offre}"
-							value="0" />
-					</h:commandButton>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Secteur" />
+							</f:facet>
+							<h:outputText value="#{row[0]}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Date" />
+							</f:facet>
+							<h:outputText value="#{row[1]}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Info" />
+							</f:facet>
+							<h:outputText value="#{row[3]}" />
+						</h:column>
+
+					</h:dataTable>
 				</h:panelGroup>
+			</h:form>
+			<br />
+			<br />
+			<br />
 
-			</h:panelGroup>
+			<!-- PARTIE VENTES -->
+			<h:panelGroup layout="block" styleClass="login-triangle" />
+			<h2 class="login-header">VENTES</h2>
+			<h:form id="formVentes" styleClass="login-container">
+				<f:ajax event="click" />
 
-			<h:panelGroup id="achatI">
-				<br />
-				<span>ACHATS IMMEDIATS</span>
-				<br />
-				<h:dataTable value="#{achatVenteBean.resultatAchatI}" var="row">
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Societe" />
-						</f:facet>
-						<h:outputText value="#{row[4]}" />
-					</h:column>
+				<h:selectOneMenu value="#{achatVenteBean.secteurA}">
+					<f:selectItem itemValue=" " itemLabel=" " />
+					<f:selectItems value="#{secteurBean.societes}" var="secteur"
+						itemValue="#{secteur.VSecteur}" itemLabel="#{secteur.VSecteur}" />
+					<f:ajax listener="#{achatVenteBean.rechercheAchat()}"
+						render="encheres achatI" />
+					<f:ajax event="click" />
+				</h:selectOneMenu>
 
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Secteur" />
-						</f:facet>
-						<h:outputText value="#{row[0]}" />
-					</h:column>
+				<h:selectOneMenu value="#{achatVenteBean.firmA}">
+					<f:selectItem itemValue=" " itemLabel=" " />
+					<f:selectItems value="#{societeBean.societes}" var="societe"
+						itemValue="#{societe.nom}" itemLabel="#{societe.nom}" />
+					<f:ajax listener="#{achatVenteBean.rechercheAchat()}"
+						render="encheres achatI" />
+					<f:ajax event="click" />
+				</h:selectOneMenu>
 
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Date mis en vente" />
-						</f:facet>
-						<h:outputText value="#{row[3]}" />
-					</h:column>
+				<h:panelGroup id="encheres">
+					<br />
+					<span>ENCHERES</span>
+					<br />
+					<h:dataTable value="#{achatVenteBean.resultatEncheres}" var="row">
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Societe" />
+							</f:facet>
+							<h:outputText value="#{row[5]}" />
+						</h:column>
 
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Prix" />
-						</f:facet>
-						<h:outputText value="#{row[2]}" />
-					</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Secteur" />
+							</f:facet>
+							<h:outputText value="#{row[0]}" />
+						</h:column>
 
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Acheter" />
-						</f:facet>
-						<h:commandButton value="Acheter" styleClass="sansLabel"
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Date mis en vente" />
+							</f:facet>
+							<h:outputText value="#{row[3]}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Prix de départ" />
+							</f:facet>
+							<h:outputText value="#{row[2]}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Prix actuel" />
+							</f:facet>
+							<h:outputText value="#{row[4]}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Date limite" />
+							</f:facet>
+							<h:outputText value="#{row[6]}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Nombre d'enchères" />
+							</f:facet>
+							<h:outputText value="#{row[1]}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Encherir" />
+							</f:facet>
+							<h:commandButton value="Encherir" styleClass="sansLabel"
+								converter="javax.faces.Float">
+								<f:setPropertyActionListener
+									target="#{achatVenteBean.idContratA}" value="#{row[7]}" />
+								<f:setPropertyActionListener
+									target="#{achatVenteBean.prixAchat}" value="#{row[4]}" />
+								<f:setPropertyActionListener
+									target="#{achatVenteBean.dateAchat}" value="#{row[6]}" />
+							</h:commandButton>
+						</h:column>
+					</h:dataTable>
+
+					<h:panelGroup rendered="#{achatVenteBean.idContratA!=0}">
+						<h:outputLabel for="offre"> Offre : <span
+								class="requis">*</span>
+						</h:outputLabel>
+						<h:inputText id="offre" value="#{achatVenteBean.offre}"
 							converter="javax.faces.Float">
+							<f:validator validatorId="enchereValidator" />
+							<f:attribute name="dateActuelle"
+								value="#{achatVenteBean.dateAchat}" />
+							<f:attribute name="prixActuel"
+								value="#{achatVenteBean.prixAchat}" />
+							<f:attribute name="compte"
+								value="#{achatVenteBean.investisseur.vCompte}" />
+							<f:ajax event="blur" render="offreMessage" />
+						</h:inputText>
+						<h:message id="offreMessage" for="offre" errorClass="erreur" />
+						<br />
+
+						<h:commandButton value="Valider"
+							action="#{achatVenteBean.encherir()}" styleClass="sansLabel" />
+						<h:commandButton value="Annuler" styleClass="sansLabel"
+							converter="javax.faces.Integer" immediate="true">
 							<f:setPropertyActionListener
-								target="#{achatVenteBean.idContratAI}" value="#{row[5]}" />
-							<f:setPropertyActionListener target="#{achatVenteBean.prixAchat}"
-								value="#{row[2]}" />
-							<f:setPropertyActionListener target="#{achatVenteBean.idVendeur}"
-								value="#{row[1]}" />
+								target="#{achatVenteBean.idContratA}" value="0" />
+							<f:setPropertyActionListener target="#{achatVenteBean.offre}"
+								value="0" />
 						</h:commandButton>
-					</h:column>
-				</h:dataTable>
-
-				<h:panelGroup rendered="#{achatVenteBean.idContratAI!=0}">
-					<h:outputLabel for="prixAI"> Confirmez le prix : <span
-							class="requis">*</span>
-					</h:outputLabel>
-					<h:inputText id="prixAI" value="#{achatVenteBean.offre}"
-						converter="javax.faces.Float">
-						<f:validator validatorId="achatValidator" />
-						<f:attribute name="prixActuel" value="#{achatVenteBean.prixAchat}" />
-						<f:attribute name="compte"
-							value="#{achatVenteBean.investisseur.vCompte}" />
-						<f:ajax event="blur" render="prixAIMessage" />
-					</h:inputText>
-					<h:message id="prixAIMessage" for="prixAI" errorClass="erreur" />
-					<br />
-
-					<h:commandButton value="Valider"
-						action="#{achatVenteBean.acheter()}" styleClass="sansLabel" />
-					<h:commandButton value="Annuler" styleClass="sansLabel"
-						converter="javax.faces.Integer" immediate="true">
-						<f:setPropertyActionListener
-							target="#{achatVenteBean.idContratAI}" value="0" />
-						<f:setPropertyActionListener target="#{achatVenteBean.offre}"
-							value="0" />
-					</h:commandButton>
-				</h:panelGroup>
-
-			</h:panelGroup>
-		</fieldset>
-	</h:form>
-
-	<!-- PARTIE POSSESSION -->
-	<h:form id="formPossessions">
-		<fieldset>
-			<legend>POSSESSIONS</legend>
-
-			<h:selectOneMenu value="#{achatVenteBean.secteurP}">
-				<f:selectItem itemValue=" " itemLabel=" " />
-				<f:selectItems value="#{secteurBean.societes}" var="secteur"
-					itemValue="#{secteur.VSecteur}" itemLabel="#{secteur.VSecteur}" />
-				<f:ajax listener="#{achatVenteBean.recherchePossessions()}"
-					render="pos mesEncheres mesVentes" />
-				<f:ajax event="click" />
-			</h:selectOneMenu>
-
-			<h:selectOneMenu value="#{achatVenteBean.firmP}">
-				<f:selectItem itemValue=" " itemLabel=" " />
-				<f:selectItems value="#{societeBean.societes}" var="societe"
-					itemValue="#{societe.nom}" itemLabel="#{societe.nom}" />
-				<f:ajax listener="#{achatVenteBean.recherchePossessions()}"
-					render="pos mesEncheres mesVentes" />
-				<f:ajax event="click" />
-			</h:selectOneMenu>
-
-			<h:panelGroup id="pos">
-				<br />
-				<span>MES ACHATS</span>
-				<br />
-				<h:dataTable value="#{achatVenteBean.resultatP}" var="row">
-
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Societe" />
-						</f:facet>
-						<h:outputText value="#{row[3]}" />
-					</h:column>
-
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Secteur" />
-						</f:facet>
-						<h:outputText value="#{row[0]}" />
-					</h:column>
-
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Date d'achat" />
-						</f:facet>
-						<h:outputText value="#{row[2]}" />
-					</h:column>
-
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Prix d'achat" />
-						</f:facet>
-						<h:outputText value="#{row[1]}" />
-					</h:column>
-
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Mise en vente" />
-						</f:facet>
-						<h:commandButton value="Vendre" styleClass="sansLabel"
-							converter="javax.faces.Float">
-							<f:setPropertyActionListener target="#{achatVenteBean.idContrat}"
-								value="#{row[4]}" />
-							<f:setPropertyActionListener target="#{achatVenteBean.dateAchat}"
-								value="#{row[2]}" />
-							<f:setPropertyActionListener target="#{achatVenteBean.prixAchat}"
-								value="#{row[1]}" />
-						</h:commandButton>
-					</h:column>
-
-				</h:dataTable>
-				<h:panelGroup rendered="#{achatVenteBean.idContrat!=0}">
-
-					<h:outputLabel for="valider"> Prix de vente : <span
-							class="requis">*</span>
-					</h:outputLabel>
-					<h:inputText id="valider" value="#{achatVenteBean.prix}"
-						converter="javax.faces.Float">
-						<f:ajax event="blur" render="validerMessage" />
-						<f:validator binding="#{venteValidator}" />
-					</h:inputText>
-					<h:message id="validerMessage" for="valider" errorClass="erreur" />
-					<br />
-
-					<h:outputLabel> Mettre aux enchères
-					</h:outputLabel>
-					<h:selectBooleanCheckbox value="#{achatVenteBean.estEnchere}">
-						<f:ajax render="panelE" />
-					</h:selectBooleanCheckbox>
-					<br />
-
-					<h:panelGroup id="panelE">
-						<h:panelGroup rendered="#{achatVenteBean.estEnchere=='true'}">
-							<h:outputLabel for="date"> Date finale enchère (yyyy-mm-dd) : <span
-									class="requis">*</span>
-							</h:outputLabel>
-							<h:inputText id="date" value="#{achatVenteBean.dateEnchere}"
-								binding="#{composantDate}">
-								<f:ajax event="blur" execute="date heure"
-									render="validerDate validerheure" />
-							</h:inputText>
-							<h:message id="validerDate" for="date" errorClass="erreur" />
-							<br />
-
-							<h:outputLabel for="heure"> Heure finale enchère (hh:mm:ss) : <span
-									class="requis">*</span>
-							</h:outputLabel>
-							<h:inputText id="heure" value="#{achatVenteBean.heureEnchere}">
-								<f:validator validatorId="dateValidator" />
-								<f:attribute name="composantDate" value="#{composantDate}" />
-								<f:ajax event="blur" render="validerheure" />
-							</h:inputText>
-							<h:message id="validerheure" for="heure" errorClass="erreur" />
-							<br />
-						</h:panelGroup>
 					</h:panelGroup>
 
-					<h:commandButton value="Valider"
-						action="#{achatVenteBean.vendre()}" styleClass="sansLabel" />
-					<h:commandButton value="Annuler" styleClass="sansLabel"
-						converter="javax.faces.Integer" immediate="true">
-						<f:setPropertyActionListener target="#{achatVenteBean.idContrat}"
-							value="0" />
-					</h:commandButton>
+				</h:panelGroup>
+
+				<h:panelGroup id="achatI">
+					<br />
+					<span>ACHATS IMMEDIATS</span>
+					<br />
+					<h:dataTable value="#{achatVenteBean.resultatAchatI}" var="row">
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Societe" />
+							</f:facet>
+							<h:outputText value="#{row[4]}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Secteur" />
+							</f:facet>
+							<h:outputText value="#{row[0]}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Date mis en vente" />
+							</f:facet>
+							<h:outputText value="#{row[3]}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Prix" />
+							</f:facet>
+							<h:outputText value="#{row[2]}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Acheter" />
+							</f:facet>
+							<h:commandButton value="Acheter" styleClass="sansLabel"
+								converter="javax.faces.Float">
+								<f:setPropertyActionListener
+									target="#{achatVenteBean.idContratAI}" value="#{row[5]}" />
+								<f:setPropertyActionListener
+									target="#{achatVenteBean.prixAchat}" value="#{row[2]}" />
+								<f:setPropertyActionListener
+									target="#{achatVenteBean.idVendeur}" value="#{row[1]}" />
+							</h:commandButton>
+						</h:column>
+					</h:dataTable>
+
+					<h:panelGroup rendered="#{achatVenteBean.idContratAI!=0}">
+						<h:outputLabel for="prixAI"> Confirmez le prix : <span
+								class="requis">*</span>
+						</h:outputLabel>
+						<h:inputText id="prixAI" value="#{achatVenteBean.offre}"
+							converter="javax.faces.Float">
+							<f:validator validatorId="achatValidator" />
+							<f:attribute name="prixActuel"
+								value="#{achatVenteBean.prixAchat}" />
+							<f:attribute name="compte"
+								value="#{achatVenteBean.investisseur.vCompte}" />
+							<f:ajax event="blur" render="prixAIMessage" />
+						</h:inputText>
+						<h:message id="prixAIMessage" for="prixAI" errorClass="erreur" />
+						<br />
+
+						<h:commandButton value="Valider"
+							action="#{achatVenteBean.acheter()}" styleClass="sansLabel" />
+						<h:commandButton value="Annuler" styleClass="sansLabel"
+							converter="javax.faces.Integer" immediate="true">
+							<f:setPropertyActionListener
+								target="#{achatVenteBean.idContratAI}" value="0" />
+							<f:setPropertyActionListener target="#{achatVenteBean.offre}"
+								value="0" />
+						</h:commandButton>
+					</h:panelGroup>
+				</h:panelGroup>
+			</h:form>
+			<br />
+			<br />
+			<br />
+
+			<!-- PARTIE POSSESSION -->
+			<h:panelGroup layout="block" styleClass="login-triangle" />
+			<h2 class="login-header">POSSESSIONS</h2>
+			<h:form id="formPossessions" styleClass="login-container">
+				<h:selectOneMenu value="#{achatVenteBean.secteurP}">
+					<f:selectItem itemValue=" " itemLabel=" " />
+					<f:selectItems value="#{secteurBean.societes}" var="secteur"
+						itemValue="#{secteur.VSecteur}" itemLabel="#{secteur.VSecteur}" />
+					<f:ajax listener="#{achatVenteBean.recherchePossessions()}"
+						render="pos mesEncheres mesVentes" />
+					<f:ajax event="click" />
+				</h:selectOneMenu>
+
+				<h:selectOneMenu value="#{achatVenteBean.firmP}">
+					<f:selectItem itemValue=" " itemLabel=" " />
+					<f:selectItems value="#{societeBean.societes}" var="societe"
+						itemValue="#{societe.nom}" itemLabel="#{societe.nom}" />
+					<f:ajax listener="#{achatVenteBean.recherchePossessions()}"
+						render="pos mesEncheres mesVentes" />
+					<f:ajax event="click" />
+				</h:selectOneMenu>
+
+				<h:panelGroup id="pos">
+					<br />
+					<span>MES ACHATS</span>
+					<br />
+					<h:dataTable value="#{achatVenteBean.resultatP}" var="row">
+
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Societe" />
+							</f:facet>
+							<h:outputText value="#{row[3]}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Secteur" />
+							</f:facet>
+							<h:outputText value="#{row[0]}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Date d'achat" />
+							</f:facet>
+							<h:outputText value="#{row[2]}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Prix d'achat" />
+							</f:facet>
+							<h:outputText value="#{row[1]}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Mise en vente" />
+							</f:facet>
+							<h:commandButton value="Vendre" styleClass="sansLabel"
+								converter="javax.faces.Float">
+								<f:setPropertyActionListener
+									target="#{achatVenteBean.idContrat}" value="#{row[4]}" />
+								<f:setPropertyActionListener
+									target="#{achatVenteBean.dateAchat}" value="#{row[2]}" />
+								<f:setPropertyActionListener
+									target="#{achatVenteBean.prixAchat}" value="#{row[1]}" />
+							</h:commandButton>
+						</h:column>
+
+					</h:dataTable>
+					<h:panelGroup rendered="#{achatVenteBean.idContrat!=0}">
+<h:outputLabel for="heure"> Prix de vente
+								</h:outputLabel>
+						<h:inputText id="valider" a:placeholder="Prix de vente"
+							value="#{achatVenteBean.prix}" converter="javax.faces.Float">
+							<f:ajax event="blur" render="validerMessage" />
+							<f:validator binding="#{venteValidator}" />
+						</h:inputText>
+						<h:message id="validerMessage" for="valider" errorClass="erreur" />
+						<br />
+
+						<h:outputLabel> Mettre aux enchères
+					</h:outputLabel>
+						<h:selectBooleanCheckbox value="#{achatVenteBean.estEnchere}">
+							<f:ajax render="panelE" />
+						</h:selectBooleanCheckbox>
+						<br />
+
+						<h:panelGroup id="panelE">
+							<h:panelGroup rendered="#{achatVenteBean.estEnchere=='true'}">
+								<h:outputLabel for="date"> Date finale enchère (yyyy-mm-dd)
+								</h:outputLabel>
+								<h:inputText id="date" value="#{achatVenteBean.dateEnchere}"
+									binding="#{composantDate}">
+									<f:ajax event="blur" execute="date heure"
+										render="validerDate validerheure" />
+								</h:inputText>
+								<h:message id="validerDate" for="date" errorClass="erreur" />
+								<br />
+
+								<h:outputLabel for="heure"> Heure finale enchère (hh:mm:ss)
+								</h:outputLabel>
+								<h:inputText id="heure" value="#{achatVenteBean.heureEnchere}">
+									<f:validator validatorId="dateValidator" />
+									<f:attribute name="composantDate" value="#{composantDate}" />
+									<f:ajax event="blur" render="validerheure" />
+								</h:inputText>
+								<h:message id="validerheure" for="heure" errorClass="erreur" />
+								<br />
+							</h:panelGroup>
+						</h:panelGroup>
+
+						<h:commandButton value="Valider"
+							action="#{achatVenteBean.vendre()}" styleClass="sansLabel" />
+						<h:commandButton value="Annuler" styleClass="sansLabel"
+							converter="javax.faces.Integer" immediate="true">
+							<f:setPropertyActionListener target="#{achatVenteBean.idContrat}"
+								value="0" />
+						</h:commandButton>
+
+					</h:panelGroup>
+				</h:panelGroup>
+
+				<h:panelGroup id="mesEncheres">
+					<br />
+					<span>MES ENCHERES</span>
+					<br />
+					<h:dataTable value="#{achatVenteBean.resultatMesEncheres}"
+						var="row">
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Societe" />
+							</f:facet>
+							<h:outputText value="#{row[5]}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Secteur" />
+							</f:facet>
+							<h:outputText value="#{row[0]}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Date mis en vente" />
+							</f:facet>
+							<h:outputText value="#{row[3]}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Prix de départ" />
+							</f:facet>
+							<h:outputText value="#{row[2]}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Prix actuel" />
+							</f:facet>
+							<h:outputText value="#{row[4]}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Date limite" />
+							</f:facet>
+							<h:outputText value="#{row[6]}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Nombre d'enchères" />
+							</f:facet>
+							<h:outputText value="#{row[1]}" />
+						</h:column>
+
+					</h:dataTable>
 
 				</h:panelGroup>
-			</h:panelGroup>
 
-			<h:panelGroup id="mesEncheres">
-				<br />
-				<span>MES ENCHERES</span>
-				<br />
-				<h:dataTable value="#{achatVenteBean.resultatMesEncheres}" var="row">
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Societe" />
-						</f:facet>
-						<h:outputText value="#{row[5]}" />
-					</h:column>
+				<h:panelGroup id="mesVentes">
+					<br />
+					<span>MES VENTES</span>
+					<br />
+					<h:dataTable value="#{achatVenteBean.resultatMesVentes}" var="row">
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Societe" />
+							</f:facet>
+							<h:outputText value="#{row[3]}" />
+						</h:column>
 
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Secteur" />
-						</f:facet>
-						<h:outputText value="#{row[0]}" />
-					</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Secteur" />
+							</f:facet>
+							<h:outputText value="#{row[0]}" />
+						</h:column>
 
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Date mis en vente" />
-						</f:facet>
-						<h:outputText value="#{row[3]}" />
-					</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Date mis en vente" />
+							</f:facet>
+							<h:outputText value="#{row[2]}" />
+						</h:column>
 
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Prix de départ" />
-						</f:facet>
-						<h:outputText value="#{row[2]}" />
-					</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Prix" />
+							</f:facet>
+							<h:outputText value="#{row[1]}" />
+						</h:column>
 
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Prix actuel" />
-						</f:facet>
-						<h:outputText value="#{row[4]}" />
-					</h:column>
+					</h:dataTable>
 
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Date limite" />
-						</f:facet>
-						<h:outputText value="#{row[6]}" />
-					</h:column>
+				</h:panelGroup>
 
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Nombre d'enchères" />
-						</f:facet>
-						<h:outputText value="#{row[1]}" />
-					</h:column>
+				<h:messages globalOnly="true" infoClass="info" />
+			</h:form>
+			<br />
+			<br />
+			<br />
 
-				</h:dataTable>
-
-			</h:panelGroup>
-
-			<h:panelGroup id="mesVentes">
-				<br />
-				<span>MES VENTES</span>
-				<br />
-				<h:dataTable value="#{achatVenteBean.resultatMesVentes}" var="row">
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Societe" />
-						</f:facet>
-						<h:outputText value="#{row[3]}" />
-					</h:column>
-
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Secteur" />
-						</f:facet>
-						<h:outputText value="#{row[0]}" />
-					</h:column>
-
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Date mis en vente" />
-						</f:facet>
-						<h:outputText value="#{row[2]}" />
-					</h:column>
-
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Prix" />
-						</f:facet>
-						<h:outputText value="#{row[1]}" />
-					</h:column>
-
-				</h:dataTable>
-
-			</h:panelGroup>
-
-			<h:messages globalOnly="true" infoClass="info" />
-		</fieldset>
-	</h:form>
-
-	<!-- PARTIE LOGS -->
-	<h:form id="formLog">
-		<fieldset>
-			<legend>LOGS</legend>
-			<f:ajax event="click" />
-
-			<h:selectOneMenu value="#{achatVenteBean.secteurL}">
-				<f:selectItem itemValue=" " itemLabel=" " />
-				<f:selectItems value="#{secteurBean.societes}" var="secteur"
-					itemValue="#{secteur.VSecteur}" itemLabel="#{secteur.VSecteur}" />
-				<f:ajax listener="#{achatVenteBean.rechercheContratL()}"
-					render="logs" />
+			<!-- PARTIE LOGS -->
+			<h:panelGroup layout="block" styleClass="login-triangle" />
+			<h2 class="login-header">LOGS</h2>
+			<h:form id="formLog" styleClass="login-container">
 				<f:ajax event="click" />
-			</h:selectOneMenu>
+				<h:selectOneMenu value="#{achatVenteBean.secteurL}">
+					<f:selectItem itemValue=" " itemLabel=" " />
+					<f:selectItems value="#{secteurBean.societes}" var="secteur"
+						itemValue="#{secteur.VSecteur}" itemLabel="#{secteur.VSecteur}" />
+					<f:ajax listener="#{achatVenteBean.rechercheContratL()}"
+						render="logs" />
+					<f:ajax event="click" />
+				</h:selectOneMenu>
 
-			<h:selectOneMenu value="#{achatVenteBean.firmL}">
-				<f:selectItem itemValue=" " itemLabel=" " />
-				<f:selectItems value="#{societeBean.societes}" var="societe"
-					itemValue="#{societe.nom}" itemLabel="#{societe.nom}" />
-				<f:ajax listener="#{achatVenteBean.rechercheContratL()}"
-					render="logs" />
-				<f:ajax event="click" />
-			</h:selectOneMenu>
+				<h:selectOneMenu value="#{achatVenteBean.firmL}">
+					<f:selectItem itemValue=" " itemLabel=" " />
+					<f:selectItems value="#{societeBean.societes}" var="societe"
+						itemValue="#{societe.nom}" itemLabel="#{societe.nom}" />
+					<f:ajax listener="#{achatVenteBean.rechercheContratL()}"
+						render="logs" />
+					<f:ajax event="click" />
+				</h:selectOneMenu>
 
-			<h:panelGroup id="logs">
-				<br />
-				<h:dataTable value="#{achatVenteBean.resultatL}" var="row">
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Societe" />
-						</f:facet>
-						<h:outputText value="#{row[4]}" />
-					</h:column>
+				<h:panelGroup id="logs">
+					<br />
+					<h:dataTable value="#{achatVenteBean.resultatL}" var="row">
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Societe" />
+							</f:facet>
+							<h:outputText value="#{row[4]}" />
+						</h:column>
 
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Secteur" />
-						</f:facet>
-						<h:outputText value="#{row[0]}" />
-					</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Secteur" />
+							</f:facet>
+							<h:outputText value="#{row[0]}" />
+						</h:column>
 
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Date" />
-						</f:facet>
-						<h:outputText value="#{row[1]}" />
-					</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Date" />
+							</f:facet>
+							<h:outputText value="#{row[1]}" />
+						</h:column>
 
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Prix" />
-						</f:facet>
-						<h:outputText value="#{row[2]}" />
-					</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Prix" />
+							</f:facet>
+							<h:outputText value="#{row[2]}" />
+						</h:column>
 
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="Achat(1) Vente(0)" />
-						</f:facet>
-						<h:outputText value="#{row[3]}" />
-					</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Achat(1) Vente(0)" />
+							</f:facet>
+							<h:outputText value="#{row[3]}" />
+						</h:column>
 
-				</h:dataTable>
-			</h:panelGroup>
-		</fieldset>
-	</h:form>
+					</h:dataTable>
+				</h:panelGroup>
+			</h:form>
+		</h:panelGroup>
+	</h:panelGroup>
 </h:body>
 </html>
