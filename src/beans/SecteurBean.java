@@ -14,15 +14,15 @@ import entities.Secteur;
 @ViewScoped
 public class SecteurBean {
 	private List<Secteur> secteurs;
-	
+
 	@EJB
-    private SecteurDao    secteurDao;
-    
+    private SecteurDao secteurDao;
+
     @PostConstruct
     public void init() {
     	 secteurs = secteurDao.findAll();
     }
-    
+
     public List<Secteur> getSocietes(){
     	return secteurs;
     }
