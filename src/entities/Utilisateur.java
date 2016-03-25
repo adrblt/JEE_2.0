@@ -21,23 +21,22 @@ public class Utilisateur implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dateInscription;
 	
-	@NotNull( message = "Please enter an email address" )
-	@Pattern( regexp = "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)", message = "Please enter a valid email" )
+	@NotNull( message = "Veuillez entrer une adresse email" )
+	@Pattern( regexp = "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)", message = "Veuillez saisir un email valide" )
 	private String email;
 
-	@NotNull( message = "Please select a role" )
 	private int idRole;
 
-	@NotNull( message = "Please enter a last name" )
-	@Size( min = 3, message = "The last name must contains at least 3 characters" )
+	@NotNull( message = "Veuillez saisir un nom" )
+	@Size( min = 3, message = "Le nom doit contenir au moins 3 charactères" )
 	private String nom;
 	
-	@NotNull( message = "Please enter a first name" )
-	@Size( min = 3, message = "The first name must contains at least 3 characters" )
+	@NotNull( message = "Veuillez saisir un prénom" )
+	@Size( min = 3, message = "Le prénom doit contenir au moins 3 charactères" )
 	private String prenom;
 	
-	@NotNull( message = "Please enter a password" )
-	@Size( min = 3, message = "The password must contains at least 3 characters" )
+	@NotNull( message = "Veuillez saisir un mot de passe" )
+	@Size( min = 3, message = "Le mot de passe doit contenir au moins 3 characters" )
 	private String mdp;
 	//@Pattern(regexp = ".*(?=.{8,})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*", message = "Le mot de passe saisi n'est pas assez sécurisé")
 

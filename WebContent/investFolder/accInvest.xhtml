@@ -10,7 +10,6 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>OceanTech</title>
 	<h:outputStylesheet library="default" name="css/main.css" />
-	<h:outputStylesheet library="default" name="css/style.css" />
 
 	<link type="text/css" rel="stylesheet"
 		href="../resources/default/jQuery/demo/css/demo.css" />
@@ -412,7 +411,7 @@
 
 					</h:dataTable>
 					<h:panelGroup rendered="#{achatVenteBean.idContrat!=0}">
-<h:outputLabel for="heure"> Prix de vente
+						<h:outputLabel for="heure"> Prix de vente
 								</h:outputLabel>
 						<h:inputText id="valider" a:placeholder="Prix de vente"
 							value="#{achatVenteBean.prix}" converter="javax.faces.Float">
@@ -632,5 +631,7 @@
 			</h:form>
 		</h:panelGroup>
 	</h:panelGroup>
+
+	<h:panelGroup layout="block" styleClass="footer" />
 </h:body>
 </html>

@@ -8,7 +8,6 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>OceanTech</title>
 	<h:outputStylesheet library="default" name="css/main.css" />
-	<h:outputStylesheet library="default" name="css/style.css" />
 
 	<link type="text/css" rel="stylesheet"
 		href="../resources/default/jQuery/demo/css/demo.css" />
@@ -57,7 +56,7 @@
 
 			<!-- PARTIE VALIDATION INVESTISSEUR -->
 			<h:panelGroup layout="block" styleClass="login-triangle" />
-			<h2 class="login-header">VALIDATE INVESTISOR PROFIL</h2>
+			<h2 class="login-header">Valider profil investisseur</h2>
 			<h:form id="formInvestisseur" styleClass="login-container">
 				<h:selectManyCheckbox value="#{validateInvestBean.vinvestisseurs}"
 					converter="javax.faces.Integer">
@@ -68,7 +67,7 @@
 
 				<h:messages globalOnly="true" infoClass="info" />
 
-				<h:commandButton value="Validate"
+				<h:commandButton value="valider"
 					action="#{validateInvestBean.validate}" styleClass="sansLabel">
 					<f:ajax execute="@form" render="@form" />
 				</h:commandButton>
@@ -77,7 +76,7 @@
 			<br /><br /><br />
 			<!-- PARTIE ACCREDITATION -->
 			<h:panelGroup layout="block" styleClass="login-triangle" />
-			<h2 class="login-header">VALIDATE INVESTISOR PROFIL</h2>
+			<h2 class="login-header">Nouveau membre société</h2>
 			<h:form id="formMS" styleClass="login-container">
 				<h:inputText id="email" a:placeholder="Email" value="#{inscrireBean.utilisateur.email}"
 					size="20" maxlength="60">
@@ -87,7 +86,7 @@
 				<h:message id="emailMessage" for="email" errorClass="erreur" />
 				<br />
 
-				<h:inputSecret id="motdepasse" a:placeholder="Password"
+				<h:inputSecret id="motdepasse" a:placeholder="Mot de passe"
 					value="#{inscrireBean.utilisateur.mdp}"
 					binding="#{composantMotDePasse}" size="20" maxlength="20">
 					<f:ajax event="blur" execute="motdepasse confirmation"
@@ -97,7 +96,7 @@
 					errorClass="erreur" />
 				<br />
 
-				<h:inputSecret id="confirmation" a:placeholder="Password confirmation"
+				<h:inputSecret id="confirmation" a:placeholder="Confirmation mot de passe"
 					value="#{inscrireBean.utilisateur.mdp}" size="20" maxlength="20">
 					<f:validator validatorId="confirmationMDPValidator" />
 					<f:attribute name="composantMotDePasse"
@@ -109,14 +108,14 @@
 					errorClass="erreur" />
 				<br />
 
-				<h:inputText id="nom" a:placeholder="Last name" value="#{inscrireBean.utilisateur.nom}"
+				<h:inputText id="nom" a:placeholder="Nom" value="#{inscrireBean.utilisateur.nom}"
 					size="20" maxlength="20">
 					<f:ajax event="blur" render="nomMessage" />
 				</h:inputText>
 				<h:message id="nomMessage" for="nom" errorClass="erreur" />
 				<br />
 
-				<h:inputText id="prenom" a:placeholder="First name" value="#{inscrireBean.utilisateur.prenom}"
+				<h:inputText id="prenom" a:placeholder="Prénom" value="#{inscrireBean.utilisateur.prenom}"
 					size="20" maxlength="20">
 					<f:ajax event="blur" render="preMessage" />
 				</h:inputText>
@@ -135,7 +134,7 @@
 				<h:panelGroup id="panelGroup">
 					<h:form id="formulaire2" rendered="#{inscrireBean.idSociete==-1}">
 						<f:ajax event="click" />
-						<h:inputText id="nomS" a:placeholder="Firm name" value="#{inscrireBean.societe.nom}"
+						<h:inputText id="nomS" a:placeholder="Nom société" value="#{inscrireBean.societe.nom}"
 							size="20" maxlength="60">
 							<f:ajax event="blur" render="nomSMessage" />
 							<f:validator binding="#{existenceNomValidator}" />
@@ -163,7 +162,7 @@
 
 				<h:messages globalOnly="true" infoClass="info" />
 
-				<h:commandButton value="Enroll"
+				<h:commandButton value="valider"
 					action="#{inscrireBean.inscrire}" styleClass="sansLabel"
 					converter="javax.faces.Integer">
 					<f:setPropertyActionListener
@@ -176,7 +175,7 @@
 
 			<!-- PARTIE RECHERCHES -->
 			<h:panelGroup layout="block" styleClass="login-triangle" />
-			<h2 class="login-header">VALIDATE INVESTISOR PROFIL</h2>
+			<h2 class="login-header">Recherches</h2>
 			<h:form id="formRecherche" styleClass="login-container">
 				<h:selectOneRadio converter="javax.faces.Integer"
 					value="#{rechercheAdminBean.choix}">
@@ -207,7 +206,7 @@
 
 						<h:panelGroup id="res1">
 							<h:dataTable value="#{rechercheAdminBean.resultatS}" var="row"
-								rendered="#{rechercheAdminBean.choix==1}">
+								rendered="#{rechercheAdminBean.choix==1}" styleClass="recherche">
 								<h:column>
 									<f:facet name="header">
 										<h:outputText value="Nom" />
@@ -283,7 +282,7 @@
 							<br />
 							<span>POSSESSIONS</span>
 							<br />
-							<h:dataTable value="#{rechercheAdminBean.resultatP}" var="row">
+							<h:dataTable value="#{rechercheAdminBean.resultatP}" var="row" styleClass="recherche">
 								<h:column>
 									<f:facet name="header">
 										<h:outputText value="Societe" />
@@ -323,7 +322,7 @@
 							<br />
 							<span>VENTES</span>
 							<br />
-							<h:dataTable value="#{rechercheAdminBean.resultatV}" var="row">
+							<h:dataTable value="#{rechercheAdminBean.resultatV}" var="row" styleClass="recherche">
 								<h:column>
 									<f:facet name="header">
 										<h:outputText value="Societe" />
@@ -363,7 +362,7 @@
 							<br />
 							<span>LOGS</span>
 							<br />
-							<h:dataTable value="#{rechercheAdminBean.resultatL}" var="row">
+							<h:dataTable value="#{rechercheAdminBean.resultatL}" var="row" styleClass="recherche">
 								<h:column>
 									<f:facet name="header">
 										<h:outputText value="Societe" />
@@ -444,7 +443,7 @@
 							<br />
 							<span>INVESTISSEURS</span>
 							<br />
-							<h:dataTable value="#{rechercheAdminBean.resultatI}" var="row">
+							<h:dataTable value="#{rechercheAdminBean.resultatI}" var="row" styleClass="recherche">
 								<h:column>
 									<f:facet name="header">
 										<h:outputText value="Nom" />
@@ -484,7 +483,7 @@
 							<br />
 							<span>MEMBRES SOCIETES</span>
 							<br />
-							<h:dataTable value="#{rechercheAdminBean.resultatMS}" var="row">
+							<h:dataTable value="#{rechercheAdminBean.resultatMS}" var="row" styleClass="recherche">
 								<h:column>
 									<f:facet name="header">
 										<h:outputText value="Nom" />
@@ -527,6 +526,7 @@
 		</h:panelGroup>
 	</h:panelGroup>
 
+	<h:panelGroup layout="block" styleClass="footer"/>
 
 </h:body>
 </html>

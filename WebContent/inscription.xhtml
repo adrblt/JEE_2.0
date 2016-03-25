@@ -7,7 +7,6 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>OceanTech</title>
 	<h:outputStylesheet library="default" name="css/main.css" />
-	<h:outputStylesheet library="default" name="css/style.css" />
 
 	<link type="text/css" rel="stylesheet"
 		href="resources/default/jQuery/demo/css/demo.css" />
@@ -54,17 +53,17 @@
 			<br />
 			<h:panelGroup layout="block" styleClass="login-triangle" />
 
-			<h2 class="login-header">Sign up</h2>
+			<h2 class="login-header">INSCRIPTION</h2>
 			<h:form id="formulaire" styleClass="login-container">
-				<h:inputText id="email" a:placeholder="Email" value="#{inscrireBean.utilisateur.email}"
-					size="20" maxlength="60">
+				<h:inputText id="email" a:placeholder="Email"
+					value="#{inscrireBean.utilisateur.email}" size="20" maxlength="60">
 					<f:ajax event="blur" render="emailMessage" />
 					<f:validator binding="#{existenceEmailValidator}" />
 				</h:inputText>
 				<h:message id="emailMessage" for="email" errorClass="erreur" />
 				<br />
 
-				<h:inputSecret id="motdepasse" a:placeholder="Password"
+				<h:inputSecret id="motdepasse" a:placeholder="Mot de passe"
 					value="#{inscrireBean.utilisateur.mdp}"
 					binding="#{composantMotDePasse}" size="20" maxlength="20">
 					<f:ajax event="blur" execute="motdepasse confirmation"
@@ -74,7 +73,8 @@
 					errorClass="erreur" />
 				<br />
 
-				<h:inputSecret id="confirmation" a:placeholder="Password confirmation"
+				<h:inputSecret id="confirmation"
+					a:placeholder="Confirmation mot de passe"
 					value="#{inscrireBean.utilisateur.mdp}" size="20" maxlength="20">
 					<f:validator validatorId="confirmationMDPValidator" />
 					<f:attribute name="composantMotDePasse"
@@ -86,15 +86,15 @@
 					errorClass="erreur" />
 				<br />
 
-				<h:inputText id="nom" a:placeholder="Last name" value="#{inscrireBean.utilisateur.nom}"
-					size="20" maxlength="20">
+				<h:inputText id="nom" a:placeholder="Nom"
+					value="#{inscrireBean.utilisateur.nom}" size="20" maxlength="20">
 					<f:ajax event="blur" render="nomMessage" />
 				</h:inputText>
 				<h:message id="nomMessage" for="nom" errorClass="erreur" />
 				<br />
 
-				<h:inputText id="prenom" a:placeholder="First name" value="#{inscrireBean.utilisateur.prenom}"
-					size="20" maxlength="20">
+				<h:inputText id="prenom" a:placeholder="Prenom"
+					value="#{inscrireBean.utilisateur.prenom}" size="20" maxlength="20">
 					<f:ajax event="blur" render="preMessage" />
 				</h:inputText>
 				<h:message id="preMessage" for="prenom" errorClass="erreur" />
@@ -102,7 +102,7 @@
 
 				<h:messages globalOnly="true" infoClass="info" />
 
-				<h:commandButton value="Inscription"
+				<h:commandButton value="Valider inscription"
 					action="#{inscrireBean.inscrire}" styleClass="sansLabel"
 					converter="javax.faces.Integer">
 					<f:setPropertyActionListener
@@ -113,5 +113,8 @@
 			</h:form>
 		</h:panelGroup>
 	</h:panelGroup>
+
+	<h:panelGroup layout="block" styleClass="footer"/>
+	
 </h:body>
 </html>

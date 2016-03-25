@@ -7,7 +7,6 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>OceanTech</title>
 	<h:outputStylesheet library="default" name="css/main.css" />
-	<h:outputStylesheet library="default" name="css/style.css" />
 
 	<link type="text/css" rel="stylesheet"
 		href="../resources/default/jQuery/demo/css/demo.css" />
@@ -52,7 +51,7 @@
 	<h:panelGroup layout="block" styleClass="container">
 		<h:panelGroup layout="block" styleClass="login">
 			<h:panelGroup layout="block" styleClass="login-triangle" />
-			<h2 class="login-header">NOUVEL INFO</h2>
+			<h2 class="login-header">NOUVELLE INFO</h2>
 			<h:form id="formulaire" styleClass="login-container">
 				<h:inputTextarea id="infoS" value="#{infoBean.info.VInfo}"
 					style="width: 300px;height: 100px;resize: none;">
@@ -63,7 +62,7 @@
 
 				<h:messages globalOnly="true" infoClass="info" />
 
-				<h:commandButton value="Publier" action="#{infoBean.publier}"
+				<h:commandButton value="publier" action="#{infoBean.publier}"
 					styleClass="sansLabel">
 					<f:setPropertyActionListener target="#{infoBean.utilisateur}"
 						value="#{connexionBean.utilisateur}" />
@@ -72,5 +71,7 @@
 			</h:form>
 		</h:panelGroup>
 	</h:panelGroup>
+
+	<h:panelGroup layout="block" styleClass="footer"/>
 </h:body>
 </html>

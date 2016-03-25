@@ -7,7 +7,6 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>OceanTech</title>
 	<h:outputStylesheet library="default" name="css/main.css" />
-	<h:outputStylesheet library="default" name="css/style.css" />
 
 	<link type="text/css" rel="stylesheet"
 		href="resources/default/jQuery/demo/css/demo.css" />
@@ -54,28 +53,30 @@
 			<br />
 			<h:panelGroup layout="block" styleClass="login-triangle" />
 
-			<h2 class="login-header">Login to your account</h2>
+			<h2 class="login-header">Connexion</h2>
 			<h:form id="formulaire" styleClass="login-container">
 				<h:inputText id="email" a:placeholder="Email"
 					value="#{connexionBean.utilisateur.email}" size="20" maxlength="60" />
 				<br />
 
-				<h:inputSecret id="motdepasse" a:placeholder="Password"
+				<h:inputSecret id="motdepasse" a:placeholder="Mot de passe"
 					value="#{connexionBean.utilisateur.mdp}" size="20" maxlength="20" />
 				<br />
 
 				<h:messages globalOnly="true" infoClass="info" />
 
-				<h:commandButton value="Log in" action="#{connexionBean.connecter}"
+				<h:commandButton value="connexion" action="#{connexionBean.connecter}"
 					styleClass="sansLabel">
 					<f:ajax execute="@form" render="@form" />
 				</h:commandButton>
 
 				<h:outputLabel>
-				Don't have an account ? <a href="inscription.xhtml">Sign up!</a>
+				Pas encore membre ? <a href="inscription.xhtml">inscription</a>
 				</h:outputLabel>
 			</h:form>
 		</h:panelGroup>
 	</h:panelGroup>
+
+	<h:panelGroup layout="block" styleClass="footer"/>
 </h:body>
 </html>
